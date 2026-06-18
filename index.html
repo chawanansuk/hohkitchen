@@ -27,17 +27,21 @@
 <meta name="twitter:title" content="House of Happiness Kitchen">
 <meta name="twitter:description" content="ข้าวราดแกงจัดเอง · ของที่ระลึก ยาดม-ยาหม่อง">
 <meta name="twitter:image" content="https://chawanansuk.github.io/hohkitchen/og.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","name":"House of Happiness Kitchen","alternateName":"ครัวแห่งความสุข","servesCuisine":"Thai","priceRange":"฿฿","url":"https://chawanansuk.github.io/hohkitchen/","image":"https://chawanansuk.github.io/hohkitchen/og.png","address":{"@type":"PostalAddress","addressLocality":"Bangkok","addressCountry":"TH"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"08:00","closes":"20:00"},"acceptsReservations":"False"}
+</script>
 
 <!-- Favicon: gold "ล" monogram on emerald -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230E3128'/%3E%3Cg stroke='%23E9D292' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M50 16 L22 40'/%3E%3Cpath d='M50 16 L78 40'/%3E%3Cpath d='M22 40 C15 38 11 34 12 27'/%3E%3Cpath d='M78 40 C85 38 89 34 88 27'/%3E%3Cpath d='M24 40 H76'/%3E%3Cpath d='M31 40 V82'/%3E%3Cpath d='M69 40 V82'/%3E%3Cpath d='M31 60 H69'/%3E%3Cpath d='M25 82 H37'/%3E%3Cpath d='M63 82 H75'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230E3128'/%3E%3Cg stroke='%23E9D292' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M50 16 L22 40'/%3E%3Cpath d='M50 16 L78 40'/%3E%3Cpath d='M22 40 C15 38 11 34 12 27'/%3E%3Cpath d='M78 40 C85 38 89 34 88 27'/%3E%3Cpath d='M24 40 H76'/%3E%3Cpath d='M31 40 V82'/%3E%3Cpath d='M69 40 V82'/%3E%3Cpath d='M31 60 H69'/%3E%3Cpath d='M25 82 H37'/%3E%3Cpath d='M63 82 H75'/%3E%3C/g%3E%3C/svg%3E">
 
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Pinyon+Script&family=Trirong:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
-<!-- PromptPay QR generator (qrcodejs). Site degrades gracefully to text if unavailable. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<!-- PromptPay QR generator (qrcodejs) — bundled locally (offline-capable). -->
+<script src="qrcode.min.js" defer></script>
 
 <style>
   :root{
@@ -247,6 +251,40 @@
 
   .empty{text-align:center;padding:60px 30px;color:var(--creamdim)}
   .empty .big{font-family:'Trirong',serif;font-size:22px;color:var(--cream);margin-bottom:8px}
+
+  /* ---- a11y + smoothness ---- */
+  html{scroll-behavior:smooth}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  [tabindex="-1"]:focus{outline:none}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,[role="tab"]:focus-visible{outline:2px solid var(--goldlt);outline-offset:2px;border-radius:6px}
+  @media (prefers-reduced-motion:no-preference){
+    .card,.btn,.tab,.souv-add,.chip,.langbtn,.dashbtn,.spice,.qtybox button,.stepper button{transition:transform .14s cubic-bezier(.22,1,.36,1),box-shadow .2s,background .15s,color .15s,border-color .15s}
+    .btn:active,.souv-add:active,.dashbtn:active,.chip:active,.langbtn:active{transform:translateY(1px) scale(.985)}
+  }
+  /* ---- QR loading shimmer ---- */
+  .qr-load{display:block;width:150px;height:150px;border-radius:8px;background:linear-gradient(100deg,#e9e3d3 30%,#fff 50%,#e9e3d3 70%);background-size:220% 100%;animation:kklShimmer 1.2s linear infinite}
+  /* ---- order success screen ---- */
+  .done{text-align:center;padding:26px 14px 10px}
+  .done-badge{width:64px;height:64px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),var(--goldlt));box-shadow:0 0 30px rgba(201,162,74,.5);animation:kklPop .4s ease}
+  .done h2{font-family:'Trirong',serif;font-size:28px;font-weight:700;margin:0}
+  .done-sub{color:var(--creamdim);font-size:14px;margin-top:6px}
+  .done-card{margin:20px auto 0;max-width:340px;border:1px solid var(--hairs);border-radius:18px;background:linear-gradient(170deg,rgba(255,255,255,.07),rgba(255,255,255,.02));padding:6px 18px}
+  .done-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;font-size:14px;color:var(--creamdim)}
+  .done-row+.done-row{border-top:1px dashed var(--hair)}
+  .done-row b{color:var(--cream);font-size:16px}
+  .done-card .gold-text{font-family:'Trirong',serif;font-size:20px}
+  .done-note{color:var(--creamfaint);font-size:12.5px;margin-top:16px;line-height:1.6;max-width:340px;margin-left:auto;margin-right:auto}
+  /* ---- desktop: premium centered rail + richer hover ---- */
+  @media (min-width:840px){
+    .frame{max-width:600px;border-left:1px solid var(--hair);border-right:1px solid var(--hair);box-shadow:0 0 110px rgba(0,0,0,.5)}
+    .screen{padding:2px 28px 8px}
+    header{padding-top:38px}
+    .card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(7,32,25,.5)}
+    .card.flat:hover{transform:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 20px rgba(7,32,25,.4)}
+  }
+  @media (min-width:1200px){
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(38% 48% at 11% 50%,rgba(201,162,74,.06),transparent 60%),radial-gradient(38% 48% at 89% 50%,rgba(201,162,74,.06),transparent 60%)}
+  }
 </style>
 </head>
 <body>
@@ -267,6 +305,8 @@ var CONFIG = {
   whatsappPhone: '66812345678',  // WhatsApp number, country code, no +
   lineId: '@kualuang',           // LINE official id (display only)
   defaultLang: 'th',
+  orderWebhook: '',              // optional: POST orders here (Google Apps Script / Formspree / serverless URL)
+  plausibleDomain: '',           // optional: privacy-friendly analytics domain (Plausible)
   hoursTh: 'เปิดทุกวัน 08:00–20:00',
   hoursEn: 'Open daily 08:00–20:00',
   // Souvenirs can auto-load from a Shopify store's public products.json, fetched
@@ -537,7 +577,8 @@ var T={
    wa:'ส่งออเดอร์ทาง WhatsApp',line:'ส่งทาง LINE',copy:'คัดลอกออเดอร์',copied:'คัดลอกออเดอร์แล้ว ✓',
    payttl:'ชำระด้วย PromptPay',payScan:'สแกนเพื่อจ่าย',payOr:'หรือเงินสดปลายทาง',ppLabel:'พร้อมเพย์',
    emptyTitle:'ตะกร้ายังว่างอยู่',emptySub:'เริ่มจัดสำรับ หรือเลือกของที่ระลึกได้เลย',
-   footHours:CONFIG.hoursTh,footPay:'รับชำระผ่านพร้อมเพย์ · เงินสดปลายทาง'},
+   footHours:CONFIG.hoursTh,footPay:'รับชำระผ่านพร้อมเพย์ · เงินสดปลายทาง',
+   thankTitle:'ขอบคุณ! ส่งออเดอร์แล้ว',thankSub:'ทางร้านได้รับคำสั่งซื้อของคุณแล้ว',thankNote:'ทางร้านจะติดต่อกลับเพื่อยืนยันและนัดรับ',refLabel:'เลขอ้างอิง',newOrder:'เริ่มออเดอร์ใหม่',backCart:'‹ กลับไปแก้ไข / ส่งซ้ำ'},
  en:{eyebrow:'House Menu',tagline:'Build your own curry rice — one step at a time',
    tabMeal:'Set Meals',tabSouv:'Souvenirs',
    stepWord:'Step',ofWord:'of',back:'Back',next:'Next',one:'Pick one',
@@ -552,7 +593,8 @@ var T={
    wa:'Send order via WhatsApp',line:'Send via LINE',copy:'Copy order',copied:'Order copied ✓',
    payttl:'Pay with PromptPay',payScan:'Scan to pay',payOr:'or cash on pickup',ppLabel:'PromptPay',
    emptyTitle:'Your cart is empty',emptySub:'Build a plate or pick up a souvenir',
-   footHours:CONFIG.hoursEn,footPay:'PromptPay & cash on pickup accepted'}
+   footHours:CONFIG.hoursEn,footPay:'PromptPay & cash on pickup accepted',
+   thankTitle:'Thank you! Order sent',thankSub:'We have received your order',thankNote:'We will contact you to confirm and arrange pickup',refLabel:'Reference',newOrder:'Start a new order',backCart:'‹ Back to edit / resend'}
 };
 
 /* index everything by id (for cart lookup + image fallback) */
@@ -573,9 +615,26 @@ var state={
  cart:[],               // {kind:'set',...} | {kind:'souvenir',id,qty}
  meta:{name:'',room:'',time:'',note:''},
  editingIndex:null,
- toast:''
+ toast:'',
+ lastOrderNo:'', lastOrderTotal:0
 };
-var toastTimer=null, qrAmount=-1;
+var toastTimer=null, qrAmount=-1, prevView='';
+
+/* ---- persistence: cart/meta/lang survive refresh; first visit picks language from the browser ---- */
+var LS_KEY='hohk_v1';
+function persist(){try{localStorage.setItem(LS_KEY,JSON.stringify({cart:state.cart,meta:state.meta,lang:state.lang}));}catch(e){}}
+(function(){
+ var s=null;try{s=JSON.parse(localStorage.getItem(LS_KEY)||'null');}catch(e){}
+ if(s){
+  if(Array.isArray(s.cart))state.cart=s.cart;
+  if(s.meta)state.meta=Object.assign(state.meta,s.meta);
+  if(s.lang==='th'||s.lang==='en')state.lang=s.lang;
+  state.cart.forEach(function(c){if(c.kind==='souvenir'&&c.prod)ITEMS[c.id]=c.prod;}); /* re-register snapshots */
+ }else{
+  var nl=((navigator.language||navigator.userLanguage||'')+'').toLowerCase();
+  state.lang = nl.indexOf('th')===0 ? 'th' : 'en';
+ }
+})();
 
 /* ============================================================
    HELPERS
@@ -588,14 +647,15 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 function renderArt(o){return (o.art&&['inhaler','bottle','jar','giftset'].indexOf(o.art.t)>=0)?souvenirSVG(o):dishSVG(o);}
 function artById(id){var o=ITEMS[id];return o?renderArt(o):'';}
 window.kklArtFallback=function(img){var id=img.getAttribute('data-art');img.outerHTML='<div class="illo-svg">'+artById(id)+'</div>';};
+function wixSrcset(u){if(!/wixstatic\.com/.test(u)||!/w_\d+,h_\d+/.test(u))return '';var mk=function(w){return u.replace(/w_\d+,h_\d+/,'w_'+w+',h_'+w)+' '+w+'w';};return ' srcset="'+[mk(320),mk(500),mk(800)].join(', ')+'" sizes="(min-width:840px) 320px, 46vw"';}
 function illoHTML(o){
- if(o.img){return '<img class="illo-img" src="'+esc(o.img)+'" alt="'+esc(nm(o))+'" referrerpolicy="no-referrer" loading="lazy" data-art="'+o.id+'" onerror="kklArtFallback(this)">';}
+ if(o.img){return '<img class="illo-img" src="'+esc(o.img)+'"'+wixSrcset(o.img)+' alt="'+esc(nm(o))+'" referrerpolicy="no-referrer" loading="lazy" decoding="async" data-art="'+o.id+'" onerror="kklArtFallback(this)">';}
  return '<div class="illo-svg">'+renderArt(o)+'</div>';
 }
 function spiceEl(level){return '<span style="display:inline-flex;align-items:center">'+spiceMiniSVG(level)+'</span>';}
 
 function setPrice(set){
- if(set.kind==='souvenir'){var p=ITEMS[set.id];return p?p.price:0;}
+ if(set.kind==='souvenir'){var p=souvProd(set);return p?p.price:0;}
  var s=0;['curry','veg','rice'].forEach(function(k){if(set[k])s+=set[k].price;});
  (set.extras||[]).forEach(function(id){var e=ITEMS[id];if(e)s+=e.price;});
  return s;
@@ -605,6 +665,7 @@ function grandTotal(){return state.cart.reduce(function(s,set){return s+setPrice
 function cartCount(){return state.cart.reduce(function(s,set){return s+set.qty;},0);}
 function findSouv(id){for(var i=0;i<state.cart.length;i++){if(state.cart[i].kind==='souvenir'&&state.cart[i].id===id)return i;}return -1;}
 function souvQtyInCart(id){var i=findSouv(id);return i<0?0:state.cart[i].qty;}
+function souvProd(set){return (set&&set.prod)||ITEMS[set.id]||{id:set.id,th:'—',en:'—',price:0,art:{t:'jar',lid:'#C9A24A'}};}
 
 /* ============================================================
    ACTIONS
@@ -630,15 +691,16 @@ function editSet(idx){var set=state.cart[idx];state.view='build';state.tab='buil
  state.draft={curry:set.curry,veg:set.veg,rice:set.rice,spice:set.spice,extras:set.extras.slice()};render();window.scrollTo(0,0);}
 function removeSet(idx){state.cart.splice(idx,1);if(state.cart.length===0){state.view='build';state.tab='build';state.step=0;state.draft={extras:[]};state.editingIndex=null;}render();}
 function setQty(idx,d){var c=state.cart[idx];c.qty=Math.max(1,c.qty+d);render();}
-function addSouv(id){var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.cart.push({kind:'souvenir',id:id,qty:1});toast(T[state.lang].added);render();}
-function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0)state.cart.push({kind:'souvenir',id:id,qty:1});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
-function setMeta(k,v){state.meta[k]=v;}
+function addSouv(id){var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});toast(T[state.lang].added);render();}
+function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0)state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
+function setMeta(k,v){state.meta[k]=v;persist();}
 
 function toast(m){state.toast=m;clearTimeout(toastTimer);toastTimer=setTimeout(function(){state.toast='';render();},1800);}
 
 function orderText(){
  var L=state.lang,t=T[L],m=state.meta;
  var out='🍛 '+(L==='th'?'ออเดอร์ — House of Happiness Kitchen':'Order — House of Happiness Kitchen')+'\n';
+ if(state.lastOrderNo)out+=(L==='th'?'เลขอ้างอิง: ':'Ref: ')+state.lastOrderNo+'\n';
  if(m.name||m.room||m.time)out+=t.name+': '+(m.name||'-')+' | '+t.room+': '+(m.room||'-')+' | '+t.time+': '+(m.time||t.asap)+'\n';
  var sets=state.cart.filter(function(c){return c.kind!=='souvenir';});
  var souv=state.cart.filter(function(c){return c.kind==='souvenir';});
@@ -648,14 +710,24 @@ function orderText(){
   if(set.spice)out+='  '+t.spice+': '+nm(set.spice)+'\n';
   if(set.extras.length)out+='  '+t.extra+': '+set.extras.map(function(id){return nm(ITEMS[id]);}).join(', ')+'\n';
  });
- if(souv.length){out+='— — — — — —\n'+t.secSouv+'\n';souv.forEach(function(s){var p=ITEMS[s.id];out+='• '+nm(p)+' ×'+s.qty+' (฿'+(p.price*s.qty)+')\n';});}
+ if(souv.length){out+='— — — — — —\n'+t.secSouv+'\n';souv.forEach(function(s){var p=souvProd(s);out+='• '+nm(p)+' ×'+s.qty+' (฿'+(p.price*s.qty)+')\n';});}
  if(m.note)out+=t.note+': '+m.note+'\n';
  out+='— — — — — —\n'+t.total+': ฿'+grandTotal();
  return out;
 }
-function sendWhatsApp(){window.open('https://wa.me/'+CONFIG.whatsappPhone+'?text='+encodeURIComponent(orderText()),'_blank');}
-function sendLine(){window.open('https://line.me/R/msg/text/?'+encodeURIComponent(orderText()),'_blank');}
-function copyOrder(){var tx=orderText();var done=function(){toast(T[state.lang].copied);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx).then(done).catch(done);}else done();}
+function genOrderNo(){var d=new Date(),p=function(n){return(''+n).padStart(2,'0');};return 'HH'+(''+d.getFullYear()).slice(2)+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'-'+Math.floor(100+Math.random()*900);}
+function sendOrderWebhook(channel,txt){var url=CONFIG.orderWebhook;if(!url)return;try{fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:state.lastOrderNo,channel:channel,total:grandTotal(),lang:state.lang,name:state.meta.name,room:state.meta.room,time:state.meta.time,note:state.meta.note,items:txt,at:new Date().toISOString()})});}catch(e){}}
+function track(ev,props){try{if(window.plausible)window.plausible(ev,{props:props||{}});}catch(e){}}
+function submitOrder(channel){
+ if(!state.lastOrderNo)state.lastOrderNo=genOrderNo();
+ var txt=orderText();
+ if(channel==='wa')window.open('https://wa.me/'+CONFIG.whatsappPhone+'?text='+encodeURIComponent(txt),'_blank');
+ else if(channel==='line')window.open('https://line.me/R/msg/text/?'+encodeURIComponent(txt),'_blank');
+ sendOrderWebhook(channel,txt);track('Order',{channel:channel});
+ state.lastOrderTotal=grandTotal();state.view='done';render();window.scrollTo(0,0);
+}
+function copyOrder(){if(!state.lastOrderNo)state.lastOrderNo=genOrderNo();var tx=orderText();var done=function(){toast(T[state.lang].copied);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx).then(done).catch(done);}else done();sendOrderWebhook('copy',tx);track('Order',{channel:'copy'});}
+function newOrder(){state.cart=[];state.meta={name:'',room:'',time:'',note:''};state.lastOrderNo='';state.draft={extras:[]};state.step=0;state.editingIndex=null;state.view='build';state.tab='build';persist();render();window.scrollTo(0,0);}
 
 /* ============================================================
    VIEW (HTML string builders)
@@ -739,7 +811,7 @@ function buildScreenHTML(){
    var selected=!!(state.draft[s.key]&&state.draft[s.key].id===o.id);
    return optionCardHTML(o,selected,'pick',' data-k="'+s.key+'"');
   }).join('');
-  return '<div class="screen rise"><div class="qhead">'+esc(s.q[state.lang])+'</div>'+
+  return '<div class="screen rise"><div class="qhead" data-focus tabindex="-1">'+esc(s.q[state.lang])+'</div>'+
    '<div class="qsub">'+esc(t.one)+'</div><div class="grid">'+cards+'</div></div>';
  }
  // custom step
@@ -752,7 +824,7 @@ function buildScreenHTML(){
   var sel=state.draft.extras.indexOf(o.id)>=0;
   return optionCardHTML(o,sel,'extra','');
  }).join('');
- return '<div class="screen rise"><div class="qhead">'+esc(t.custom)+'</div>'+
+ return '<div class="screen rise"><div class="qhead" data-focus tabindex="-1">'+esc(t.custom)+'</div>'+
   '<div class="qsub">'+esc(t.spice)+' · '+esc(t.extra)+'</div>'+
   '<div class="seg-label">'+esc(t.spice)+'</div><div class="spices">'+spices+'</div>'+
   '<div class="seg-label">'+esc(t.extra)+'</div><div class="grid">'+extras+'</div></div>';
@@ -780,7 +852,7 @@ function shopCardHTML(o){
 function shopScreenHTML(){
  var t=T[state.lang];
  var cards=SOUVENIRS.map(shopCardHTML).join('');
- return '<div class="screen rise"><div class="qhead">'+esc(t.shopTitle)+'</div>'+
+ return '<div class="screen rise"><div class="qhead" data-focus tabindex="-1">'+esc(t.shopTitle)+'</div>'+
   '<div class="qsub">'+esc(t.shopSub)+'</div>'+
   '<div class="seg-label" style="margin-bottom:14px">'+esc(t.shopHint)+'</div>'+
   '<div class="grid">'+cards+'</div></div>';
@@ -810,7 +882,7 @@ function cartSetHTML(set,idx){
    '<div class="linetotal">฿'+(setPrice(set)*set.qty)+'</div></div></div>';
 }
 function cartSouvHTML(set,idx){
- var t=T[state.lang],p=ITEMS[set.id];
+ var t=T[state.lang],p=souvProd(set);
  return '<div class="cart-card"><div class="cart-top">'+
   '<div class="avatars"><span class="avatar single">'+illoHTML(p)+'</span></div>'+
   '<div style="flex:1;min-width:0"><div class="cart-label">'+esc(t.secSouv)+'</div>'+
@@ -830,7 +902,7 @@ function cartScreenHTML(){
  var sets=[],souv=[];
  state.cart.forEach(function(c,idx){if(c.kind==='souvenir')souv.push({c:c,idx:idx});else sets.push({c:c,idx:idx});});
  var html='<div class="screen rise"><button class="backlink" data-act="continue">'+esc(t.continue)+'</button>'+
-  '<div class="cart-head"><h2 class="gold-text">'+esc(t.cartTitle)+'</h2></div>';
+  '<div class="cart-head"><h2 class="gold-text" data-focus tabindex="-1">'+esc(t.cartTitle)+'</h2></div>';
  if(sets.length){
   html+='<div class="secthead"><span class="ln"></span>'+esc(t.secMeal)+'<span class="ln"></span></div>';
   sets.forEach(function(x,i){html+=cartSetHTML(x.c,x.idx);});
@@ -844,20 +916,20 @@ function cartScreenHTML(){
  // form
  html+='<div class="form">'+
   '<div class="field"><label class="flabel">'+esc(t.name)+'</label>'+
-   '<input class="finput" data-field="name" value="'+esc(state.meta.name)+'" placeholder="'+esc(t.namePh)+'"></div>'+
+   '<input class="finput" data-field="name" value="'+esc(state.meta.name)+'" placeholder="'+esc(t.namePh)+'" autocomplete="name" autocapitalize="words" enterkeyhint="next"></div>'+
   '<div class="row2"><div class="field"><label class="flabel">'+esc(t.room)+'</label>'+
-    '<input class="finput" data-field="room" value="'+esc(state.meta.room)+'" placeholder="'+esc(t.roomPh)+'"></div>'+
+    '<input class="finput" data-field="room" value="'+esc(state.meta.room)+'" placeholder="'+esc(t.roomPh)+'" autocomplete="off" autocapitalize="characters" enterkeyhint="next"></div>'+
    '<div class="field"><label class="flabel">'+esc(t.time)+'</label>'+
     '<select class="fselect" data-field="time">'+
      [['',t.asap],['08:00','08:00'],['09:00','09:00'],['12:00','12:00'],['18:00','18:00'],['19:00','19:00']].map(function(o){
        return '<option value="'+o[0]+'"'+(state.meta.time===o[0]?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+
     '</select></div></div>'+
   '<div class="field"><label class="flabel">'+esc(t.note)+'</label>'+
-   '<input class="finput" data-field="note" value="'+esc(state.meta.note)+'" placeholder="'+esc(t.notePh)+'"></div>'+
+   '<input class="finput" data-field="note" value="'+esc(state.meta.note)+'" placeholder="'+esc(t.notePh)+'" autocomplete="off" enterkeyhint="done"></div>'+
  '</div>';
  // total + pay
  html+='<div class="totalrow"><span class="lbl">'+esc(t.total)+'</span><span class="grand gold-text">฿'+grandTotal()+'</span></div>'+
-  '<div class="paybox"><h4>'+esc(t.payttl)+'</h4><div class="qr" id="qr"></div>'+
+  '<div class="paybox"><h4>'+esc(t.payttl)+'</h4><div class="qr" id="qr"><span class="qr-load"></span></div>'+
    '<div class="paynote">'+esc(t.payScan)+' <b>฿'+grandTotal()+'</b> · '+esc(t.ppLabel)+' <b>'+esc(CONFIG.promptpayId)+'</b><br>'+esc(t.payOr)+'</div></div>';
  html+='</div>';
  return html;
@@ -865,6 +937,7 @@ function cartScreenHTML(){
 
 function bottomBarHTML(){
  var t=T[state.lang];
+ if(state.view==='done')return '';
  if(state.view==='build'){
   var step=state.step,isCustom=step===3;
   var nextEnabled=isCustom?!!state.draft.spice:!!(STEPS[step]&&state.draft[STEPS[step].key]);
@@ -891,17 +964,33 @@ function bottomBarHTML(){
  '</div>';
 }
 
-function toastHTML(){return state.toast?('<div class="toast">'+esc(state.toast)+'</div>'):'';}
+function toastHTML(){return state.toast?('<div class="toast" role="status" aria-live="polite">'+esc(state.toast)+'</div>'):'';}
 
+function doneScreenHTML(){
+ var t=T[state.lang];
+ return '<div class="screen rise"><div class="done">'+
+  '<div class="done-badge"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>'+
+  '<h2 class="gold-text" data-focus tabindex="-1">'+esc(t.thankTitle)+'</h2>'+
+  '<div class="done-sub">'+esc(t.thankSub)+'</div>'+
+  '<div class="done-card"><div class="done-row"><span>'+esc(t.refLabel)+'</span><b>'+esc(state.lastOrderNo)+'</b></div>'+
+   '<div class="done-row"><span>'+esc(t.total)+'</span><b class="gold-text">฿'+state.lastOrderTotal+'</b></div></div>'+
+  '<div class="done-note">'+esc(t.thankNote)+'</div>'+
+  '<button class="btn btn-primary" style="width:100%;margin-top:18px" data-act="neworder">'+esc(t.newOrder)+'</button>'+
+  '<button class="backlink" data-act="gocart" style="margin-top:12px">'+esc(t.backCart)+'</button>'+
+ '</div></div>';
+}
 function contentHTML(){
  if(state.view==='build')return '<div class="content">'+buildScreenHTML()+footerHTML()+'</div>';
  if(state.view==='shop')return '<div class="content">'+shopScreenHTML()+footerHTML()+'</div>';
+ if(state.view==='done')return '<div class="content">'+doneScreenHTML()+footerHTML()+'</div>';
  return '<div class="content">'+cartScreenHTML()+'</div>';
 }
 
 function render(){
  root.innerHTML=headerHTML()+progressHTML()+contentHTML()+bottomBarHTML()+toastHTML();
  if(state.view==='cart')drawQR();
+ persist();
+ if(state.view!==prevView){prevView=state.view;var h=root.querySelector('[data-focus]');if(h){try{h.focus({preventScroll:true});}catch(e){}}}
 }
 
 function drawQR(){
@@ -939,9 +1028,10 @@ root.addEventListener('click',function(e){
   case 'souvadd': addSouv(id); break;
   case 'souvinc': souvStep(id,1); break;
   case 'souvdec': souvStep(id,-1); break;
-  case 'wa': sendWhatsApp(); break;
-  case 'line': sendLine(); break;
+  case 'wa': submitOrder('wa'); break;
+  case 'line': submitOrder('line'); break;
   case 'copy': copyOrder(); break;
+  case 'neworder': newOrder(); break;
  }
 });
 /* text/select inputs update state silently (no re-render → keeps focus) */
@@ -996,9 +1086,13 @@ async function loadShopSouvenirs(){
  }
 }
 
+/* optional privacy-friendly analytics (Plausible) */
+(function(){var d=CONFIG.plausibleDomain;if(d){var s=document.createElement('script');s.defer=true;s.setAttribute('data-domain',d);s.src='https://plausible.io/js/script.js';document.head.appendChild(s);}})();
+
 render();
 loadShopSouvenirs();
 })();
 </script>
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
 </body>
 </html>

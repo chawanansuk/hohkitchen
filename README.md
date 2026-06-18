@@ -14,8 +14,14 @@
 - **สองภาษา** ไทย / English สลับได้ทันที
 - **ชำระเงินพร้อมเพย์** — สร้าง QR PromptPay ตามยอดอัตโนมัติ (มาตรฐาน EMVCo + CRC-16)
 - **ส่งออเดอร์** ผ่าน WhatsApp / LINE / คัดลอกข้อความ
-- ดีไซน์ luxury เขียวมรกต–ทอง, ฟอนต์ Trirong + Noto Sans Thai, รองรับมือถือเต็มจอ,
-  เข้าถึงง่าย (a11y) และเคารพ `prefers-reduced-motion`
+- ดีไซน์ luxury เขียวมรกต–ทอง, แบรนด์ House of Happiness Kitchen (โลโก้ศาลาไทย),
+  ฟอนต์ Cinzel + Pinyon Script + Trirong + Noto Sans Thai
+- **ติดตั้งเป็นแอป (PWA)** + ใช้งานออฟไลน์ได้ (service worker) + ไอคอนลงจอโฮม
+- **จำตะกร้าอัตโนมัติ** (ไม่หายเมื่อรีเฟรช/ปิดแอป) + เลือกภาษาตามเบราว์เซอร์ครั้งแรก
+- **หน้า "ส่งออเดอร์สำเร็จ"** พร้อมเลขอ้างอิง + ปุ่มเริ่มออเดอร์ใหม่
+- **เลย์เอาต์เดสก์ท็อป** (เรลกลางจอแบบพรีเมียม) + รูป responsive (srcset) + การ์ดแชร์ (og:image)
+- **SEO** structured data (schema.org Restaurant) + sitemap/robots
+- เข้าถึงง่าย (a11y: aria-live, จัดโฟกัส, focus-visible) และเคารพ `prefers-reduced-motion`
 
 ## ตั้งค่าร้าน / Configuration
 
@@ -29,6 +35,10 @@
 | `defaultLang`   | ภาษาเริ่มต้น `th` หรือ `en` |
 | `hoursTh` / `hoursEn` | เวลาเปิด–ปิด |
 | `souvenirSource` | ดึงสินค้า "ของที่ระลึก" จากร้าน Shopify (ค่าเริ่มต้น `mowaan.com`) มาแสดงสด — โหลดฝั่งเบราว์เซอร์ลูกค้าผ่าน `products.json` ถ้าร้านบล็อก cross-origin จะใช้ภาพวาดในตัวแทนอัตโนมัติ · ตั้ง `null` เพื่อปิด |
+| `orderWebhook` | (ตัวเลือก) URL สำหรับเก็บออเดอร์อัตโนมัติ เช่น Google Apps Script / Formspree / serverless — เว้นว่าง = ปิด |
+| `plausibleDomain` | (ตัวเลือก) โดเมน analytics แบบเคารพความเป็นส่วนตัว (Plausible) — เว้นว่าง = ปิด |
+
+ไฟล์ประกอบ: `manifest.webmanifest`, `sw.js` (service worker), `qrcode.min.js`, `icon-192/512.png`, `og.png`, `sitemap.xml`, `robots.txt` — ต้องอยู่โฟลเดอร์เดียวกับ `index.html`
 
 เมนู / ราคา / ของที่ระลึก แก้ได้ที่ array `STEPS`, `EXTRAS`, `SOUVENIRS`
 

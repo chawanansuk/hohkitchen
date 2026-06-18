@@ -1,0 +1,16 @@
+{
+  "name": "House of Happiness Kitchen",
+  "short_name": "Happiness",
+  "description": "ข้าวราดแกงจัดเอง สั่งง่าย ชำระพร้อมเพย์ พร้อมของที่ระลึก",
+  "lang": "th",
+  "start_url": "./?src=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071B16",
+  "theme_color": "#0A2620",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
