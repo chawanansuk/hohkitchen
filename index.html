@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ครัวคุณหลวง · Krua Khun Luang — Bangkok</title>
+<meta name="description" content="ครัวคุณหลวง — ข้าวราดแกงจัดเอง เลือกทีละขั้น สั่งง่ายผ่าน WhatsApp / LINE ชำระด้วยพร้อมเพย์ และเลือกซื้อของที่ระลึก ยาดม-ยาหม่องโป๊ยเซียน · Krua Khun Luang: build-your-own Thai curry rice & Poy-Sian souvenirs.">
+<meta name="theme-color" content="#0A2620">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ครัวคุณหลวง">
+<meta name="format-detection" content="telephone=no">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ครัวคุณหลวง · Krua Khun Luang">
+<meta property="og:description" content="ข้าวราดแกงจัดเอง เลือกทีละขั้น — สั่งง่าย ชำระด้วยพร้อมเพย์ พร้อมของที่ระลึก ยาดม-ยาหม่องโป๊ยเซียน">
+<meta property="og:locale" content="th_TH">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary">
+
+<!-- Favicon: gold "ล" monogram on emerald -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230E3128'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23C9A24A' stroke-width='2.5'/%3E%3Ctext x='50' y='66' font-family='Georgia,serif' font-size='44' font-weight='700' fill='%23E9D292' text-anchor='middle'%3E%E0%B8%A5%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=Trirong:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+<!-- PromptPay QR generator (qrcodejs). Site degrades gracefully to text if unavailable. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+
+<style>
+  :root{
+    --night:#0A2620; --night2:#0E3128; --gold:#C9A24A; --goldlt:#E9D292;
+    --cream:#F3EAD6; --creamdim:rgba(243,234,214,.62); --creamfaint:rgba(243,234,214,.36);
+    --hair:rgba(201,162,74,.26); --hairs:rgba(201,162,74,.5); --glass:rgba(255,255,255,.05);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Noto Sans Thai',-apple-system,BlinkMacSystemFont,sans-serif;
+    color:var(--cream);
+    background:
+      radial-gradient(120% 60% at 80% -8%,rgba(201,162,74,.2),transparent 52%),
+      radial-gradient(120% 50% at 10% 105%,rgba(46,116,100,.28),transparent 55%),
+      linear-gradient(168deg,#0E3128,#0A2620 52%,#072019);
+    background-attachment:fixed;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{display:flex;justify-content:center;min-height:100vh;position:relative}
+  .noise{position:fixed;inset:0;pointer-events:none;opacity:.05;z-index:0;
+    background-image:radial-gradient(rgba(255,255,255,.85) .5px,transparent .8px);background-size:3px 3px;}
+  .frame{width:100%;max-width:520px;min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;z-index:1}
+
+  /* ---- gold shimmer text ---- */
+  .gold-text{
+    background:linear-gradient(92deg,#A9842F,#E9D292 28%,#C9A24A 52%,#F2DEA0 74%,#B58B33);
+    background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:kklShimmer 6s linear infinite;
+  }
+  @keyframes kklShimmer{to{background-position:220% 0}}
+  @keyframes kklRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes kklSweep{0%{transform:translateX(-130%)}60%,100%{transform:translateX(380%)}}
+  @keyframes kklPop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  .rise{animation:kklRise .45s cubic-bezier(.22,1,.36,1)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+  /* ---- header ---- */
+  header{position:relative;padding:30px 26px 14px;z-index:1}
+  .langtoggle{position:absolute;top:24px;right:24px;display:flex;border:1px solid var(--hairs);
+    border-radius:99px;overflow:hidden;background:var(--glass);backdrop-filter:blur(6px);z-index:5}
+  .langbtn{border:none;font-family:inherit;font-weight:700;font-size:12px;padding:7px 13px;cursor:pointer;letter-spacing:.5px;background:transparent;color:var(--creamdim)}
+  .langbtn.active{background:linear-gradient(100deg,#C9A24A,#E9D292);color:#0A2620}
+  .deco{position:absolute;top:-6px;right:-46px;width:230px;opacity:.1;pointer-events:none}
+  .brand-mono{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;margin-bottom:15px;
+    background:radial-gradient(circle at 35% 30%,rgba(233,210,146,.25),rgba(201,162,74,.06));
+    box-shadow:inset 0 0 0 1.5px var(--hairs),0 0 24px rgba(201,162,74,.18)}
+  .brand-mono::after{content:"";position:absolute;inset:6px;border:1px solid rgba(201,162,74,.5);border-radius:50%}
+  .brand-mono span{font-family:'Trirong',serif;font-weight:700;font-size:24px}
+  .eyebrow{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .brand-title{font-family:'Trirong',serif;font-weight:700;font-size:42px;line-height:1;margin-top:8px}
+  .brand-sub{font-family:'Trirong',serif;font-style:italic;font-size:14px;letter-spacing:4px;color:var(--creamdim);margin-top:9px}
+  .divider{display:flex;align-items:center;gap:11px;margin-top:15px}
+  .divider .ln{height:1px;flex:1}
+  .tagline{font-size:12.5px;color:var(--creamdim);margin-top:13px;line-height:1.55}
+
+  /* ---- tabs + cart chip ---- */
+  .navrow{display:flex;gap:10px;align-items:center;margin-top:16px}
+  .tabs{display:flex;flex:1;border:1px solid var(--hair);border-radius:99px;padding:4px;background:var(--glass);backdrop-filter:blur(6px)}
+  .tab{flex:1;border:none;background:transparent;color:var(--creamdim);font-family:inherit;font-weight:600;font-size:13px;padding:9px 6px;border-radius:99px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:color .2s}
+  .tab.active{background:linear-gradient(100deg,rgba(201,162,74,.22),rgba(233,210,146,.12));color:var(--goldlt);box-shadow:inset 0 0 0 1px var(--hairs)}
+  .tab svg{width:15px;height:15px}
+  .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hairs);background:rgba(201,162,74,.12);color:var(--goldlt);
+    font-family:inherit;font-weight:700;font-size:13px;padding:9px 14px;border-radius:99px;cursor:pointer;white-space:nowrap;position:relative}
+  .chip .dot{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:linear-gradient(135deg,var(--gold),var(--goldlt));color:#0A2620;font-size:11px;font-weight:800;display:grid;place-items:center}
+
+  /* ---- progress ---- */
+  .progress{padding:8px 26px 2px;position:relative;z-index:1}
+  .pips{display:flex;gap:7px}
+  .pip{flex:1;height:4px;border-radius:99px;background:rgba(201,162,74,.18);overflow:hidden;position:relative}
+  .pip .fill{position:absolute;inset:0;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--goldlt))}
+  .pip .sweep{position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);animation:kklSweep 1.8s ease-in-out infinite}
+  .steptext{font-size:12px;color:var(--creamdim);margin-top:11px;letter-spacing:.4px}
+  .steptext b{font-family:'Trirong',serif;font-weight:700;font-size:14px;color:var(--goldlt)}
+  .tray{display:flex;gap:8px;margin-top:13px}
+  .tray-slot{flex:1;display:flex;align-items:center;gap:7px;padding:6px 7px;border-radius:12px;border:1px dashed var(--hair);background:rgba(255,255,255,.02)}
+  .tray-slot.sel{border:1px solid var(--hairs);background:var(--glass)}
+  .tray-slot.active{border:1px solid var(--gold);background:rgba(201,162,74,.13)}
+  .tray-thumb{width:32px;height:32px;border-radius:9px;overflow:hidden;background:#0A2218;flex:0 0 auto;display:grid;place-items:center}
+  .tray-role{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);line-height:1.35}
+  .tray-name{font-size:11px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+
+  /* ---- content ---- */
+  .content{flex:1;z-index:1}
+  .screen{padding:2px 20px 8px}
+  .qhead{font-family:'Trirong',serif;font-size:26px;font-weight:600;margin:14px 2px 2px}
+  .qsub{font-family:'Trirong',serif;font-style:italic;font-size:13px;color:var(--creamfaint);margin:0 2px 16px}
+  .seg-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin:4px 2px 10px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+
+  /* ---- product / option card ---- */
+  .card{position:relative;background:var(--glass);border:1px solid var(--hair);border-radius:20px;overflow:hidden;cursor:pointer;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 20px rgba(7,32,25,.4);transition:transform .12s ease}
+  .card:active{transform:scale(.985)}
+  .card.flat{cursor:default}
+  .card.flat:active{transform:none}
+  .card .sel-ring{position:absolute;inset:0;border:2px solid var(--gold);border-radius:20px;box-shadow:0 0 0 4px rgba(201,162,74,.16),0 14px 30px rgba(7,32,25,.55);pointer-events:none;z-index:3}
+  .card-media{position:relative;aspect-ratio:1/1;background:radial-gradient(circle at 42% 34%,#143A2E,#0A2218);display:grid;place-items:center;overflow:hidden;border-bottom:1px solid var(--hair)}
+  .card-media .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(6,22,17,.86),rgba(6,22,17,.1) 42%,transparent 64%)}
+  .illo-img,.illo-svg{width:100%;height:100%;display:block}
+  .illo-img{object-fit:cover}
+  .price{position:absolute;left:10px;bottom:9px;font-family:'Trirong',serif;font-weight:700;font-size:13px;color:#0A2620;
+    background:linear-gradient(100deg,#F2DEA0,#C9A24A);padding:3px 11px;border-radius:99px;
+    box-shadow:0 4px 13px rgba(7,32,25,.45),inset 0 1px 0 rgba(255,255,255,.5)}
+  .check{position:absolute;top:9px;right:9px;width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--goldlt));
+    display:grid;place-items:center;box-shadow:0 0 14px rgba(201,162,74,.6);animation:kklPop .25s ease;z-index:4}
+  .card-body{padding:11px 13px 13px}
+  .card-name{font-weight:600;font-size:14px;color:var(--cream);line-height:1.25}
+  .card-sub{font-family:'Trirong',serif;font-style:italic;font-size:11px;color:var(--gold);opacity:.82;margin-top:3px}
+  .card-desc{font-size:11px;color:var(--creamdim);line-height:1.5;margin-top:6px;min-height:32px}
+
+  /* souvenir add controls */
+  .souv-foot{margin-top:11px}
+  .souv-add{width:100%;border:1px solid var(--hairs);background:rgba(201,162,74,.1);color:var(--goldlt);font-family:inherit;font-weight:700;font-size:13px;padding:10px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+  .souv-add:hover{background:rgba(201,162,74,.2)}
+  .stepper{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--hairs);border-radius:12px;overflow:hidden}
+  .stepper button{width:38px;height:38px;border:none;background:rgba(201,162,74,.14);color:var(--goldlt);font-size:19px;font-weight:700;cursor:pointer}
+  .stepper button:hover{background:rgba(201,162,74,.24)}
+  .stepper .n{flex:1;text-align:center;font-weight:700;font-size:15px;color:var(--cream)}
+
+  /* ---- spice row ---- */
+  .spices{display:flex;gap:9px;margin-bottom:22px}
+  .spice{position:relative;flex:1;text-align:center;cursor:pointer;border:1px solid var(--hair);background:var(--glass);border-radius:14px;padding:12px 6px}
+  .spice .ring{position:absolute;inset:0;border:1.5px solid var(--gold);border-radius:14px;background:rgba(201,162,74,.14)}
+  .spice .ic{position:relative;display:flex;justify-content:center;align-items:center;height:20px}
+  .spice .nm{position:relative;font-size:12.5px;margin-top:6px;color:var(--creamdim);font-weight:600}
+
+  /* ---- cart ---- */
+  .cart-head{text-align:center;padding:8px 8px 2px}
+  .cart-head h2{font-family:'Trirong',serif;font-size:27px;font-weight:700;margin:0}
+  .backlink{background:none;border:none;color:var(--goldlt);font-family:inherit;font-size:13px;cursor:pointer;padding:6px 2px;margin-top:2px}
+  .cart-card{position:relative;margin:14px 2px 0;border-radius:22px;padding:14px 16px;
+    background:linear-gradient(170deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--hairs);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 30px rgba(7,32,25,.4);backdrop-filter:blur(10px)}
+  .cart-top{display:flex;align-items:flex-start;gap:13px}
+  .avatars{display:flex;flex:0 0 auto}
+  .avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:#0A2218;box-shadow:0 4px 10px rgba(0,0,0,.3);border:2px solid var(--night2)}
+  .avatar+.avatar{margin-left:-13px}
+  .avatar.single{width:54px;height:54px}
+  .cart-label{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+  .cart-name{font-weight:600;font-size:13.5px;color:var(--cream);line-height:1.35;margin-top:3px}
+  .badges{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+  .badge{font-size:11px;color:var(--goldlt);border:1px solid var(--hair);border-radius:99px;padding:1px 8px}
+  .badge.plain{border:none;padding:0;display:inline-flex;align-items:center;gap:4px}
+  .removebtn{flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid var(--hair);background:transparent;color:var(--creamfaint);font-size:17px;cursor:pointer;line-height:1}
+  .cart-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed var(--hair)}
+  .editbtn{background:none;border:none;color:var(--goldlt);font-family:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .qtybox{display:flex;align-items:center;border:1px solid var(--hairs);border-radius:99px;overflow:hidden}
+  .qtybox button{width:32px;height:32px;border:none;background:rgba(201,162,74,.14);color:var(--goldlt);font-size:18px;font-weight:700;cursor:pointer}
+  .qtybox .n{min-width:30px;text-align:center;font-weight:700;font-size:15px}
+  .linetotal{font-family:'Trirong',serif;font-weight:700;color:var(--goldlt);font-size:15px;min-width:52px;text-align:right}
+  .secthead{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin:22px 4px 2px;display:flex;align-items:center;gap:8px}
+  .secthead .ln{height:1px;flex:1;background:var(--hair)}
+  .dashbtn{width:100%;margin-top:14px;border:1px dashed var(--hairs);background:rgba(201,162,74,.06);color:var(--goldlt);font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:16px;cursor:pointer;transition:background .15s}
+  .dashbtn:hover{background:rgba(201,162,74,.12)}
+  .dashrow{display:flex;gap:11px;margin-top:14px}
+  .dashrow .dashbtn{margin-top:0}
+
+  /* ---- form ---- */
+  .form{margin-top:18px;display:grid;gap:11px}
+  .field{display:grid;gap:5px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .flabel{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase}
+  .finput,.fselect{width:100%;border:1px solid var(--hair);background:rgba(255,255,255,.04);border-radius:12px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--cream)}
+  .finput:focus,.fselect:focus{border-color:var(--gold);outline:none}
+  .fselect option{color:#0A2620}
+
+  .totalrow{display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 4px}
+  .totalrow .lbl{font-size:11px;letter-spacing:2px;color:var(--creamdim);text-transform:uppercase}
+  .grand{font-family:'Trirong',serif;font-size:32px;font-weight:700}
+  .paybox{margin:8px 2px 0;border:1px solid var(--hair);border-radius:18px;padding:16px;text-align:center;background:rgba(255,255,255,.03)}
+  .paybox h4{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+  .qr{width:150px;height:150px;margin:0 auto;background:#fff;border-radius:12px;padding:8px;display:grid;place-items:center;color:#0A2620;font-size:11px;word-break:break-all}
+  .qr img,.qr canvas{display:block}
+  .paynote{font-size:12.5px;color:var(--creamdim);margin-top:12px;line-height:1.55}
+  .paynote b{color:var(--cream)}
+
+  /* ---- bottom bar ---- */
+  .bottombar{position:sticky;bottom:0;z-index:6;padding:16px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--night) 32%)}
+  .barrow{display:flex;gap:11px;align-items:stretch}
+  .btn{border:none;font-family:inherit;font-weight:700;font-size:16px;padding:16px;border-radius:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn-ghost{flex:0 0 104px;border:1px solid var(--hairs);background:var(--glass);color:var(--goldlt);backdrop-filter:blur(6px)}
+  .btn-primary{flex:1;background:linear-gradient(100deg,#B58B33,#E9D292 50%,#C9A24A);color:#0A2620;box-shadow:0 10px 26px rgba(201,162,74,.32),inset 0 1px 0 rgba(255,255,255,.4)}
+  .btn-primary[disabled]{cursor:not-allowed;opacity:.32;box-shadow:none}
+  .btn-wa{width:100%;background:#25D366;color:#fff;box-shadow:0 10px 24px rgba(37,211,102,.3)}
+  .btn-copy{flex:1;border:1px solid var(--hairs);background:var(--glass);color:var(--goldlt);backdrop-filter:blur(6px);font-size:15px;padding:15px}
+  .btn-line{flex:1;background:#06C755;color:#fff;font-size:15px;padding:15px}
+  .draftprice{text-align:center;font-size:12px;color:var(--creamdim);margin-top:9px}
+  .draftprice b{color:var(--goldlt);font-family:'Trirong',serif}
+
+  /* ---- footer ---- */
+  .footer{padding:26px 26px 10px;text-align:center;color:var(--creamfaint);font-size:11.5px;line-height:1.7;z-index:1}
+  .footer .fname{font-family:'Trirong',serif;font-style:italic;color:var(--creamdim);font-size:13px}
+  .footer a{color:var(--goldlt);text-decoration:none}
+  .footer .fdot{opacity:.5;margin:0 5px}
+
+  /* ---- toast ---- */
+  .toast{position:fixed;left:50%;bottom:132px;transform:translateX(-50%);background:#0A2620;border:1px solid var(--hairs);color:var(--goldlt);
+    padding:11px 18px;border-radius:99px;font-size:13px;font-weight:600;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:kklRise .25s}
+
+  .empty{text-align:center;padding:60px 30px;color:var(--creamdim)}
+  .empty .big{font-family:'Trirong',serif;font-size:22px;color:var(--cream);margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="noise"></div>
+  <div class="frame" id="root"></div>
+</div>
+
+<script>
+"use strict";
+(function(){
+
+/* ============================================================
+   CONFIG — edit these for the real shop
+   ============================================================ */
+var CONFIG = {
+  promptpayId: '0812345678',     // PromptPay phone / national ID
+  whatsappPhone: '66812345678',  // WhatsApp number, country code, no +
+  lineId: '@kualuang',           // LINE official id (display only)
+  defaultLang: 'th',
+  hoursTh: 'เปิดทุกวัน 08:00–20:00',
+  hoursEn: 'Open daily 08:00–20:00'
+};
+
+/* ============================================================
+   SVG DISH ART (ported from original) + souvenir art
+   ============================================================ */
+var svgOpen='<svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="display:block" xmlns="http://www.w3.org/2000/svg">';
+function _hx(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(function(c){return c+c;}).join('');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function lighten(h,t){var c=_hx(h);return 'rgb('+c.map(function(v){return Math.round(v+(255-v)*t);}).join(',')+')';}
+function darken(h,t){var c=_hx(h);return 'rgb('+c.map(function(v){return Math.round(v*(1-t));}).join(',')+')';}
+
+function cerDef(uid){return '<radialGradient id="cer'+uid+'" cx="36%" cy="28%" r="86%"><stop offset="0" stop-color="#FCF8EE"/><stop offset=".65" stop-color="#EFE6D0"/><stop offset="1" stop-color="#D8CAAC"/></radialGradient>';}
+function bowlChrome(uid){return '<ellipse cx="100" cy="158" rx="74" ry="13" fill="rgba(6,20,15,.4)"/>'+
+ '<circle cx="100" cy="100" r="88" fill="url(#cer'+uid+')"/>'+
+ '<circle cx="100" cy="100" r="88" fill="none" stroke="rgba(201,162,74,.6)" stroke-width="1.6"/>'+
+ '<circle cx="100" cy="100" r="80" fill="none" stroke="rgba(201,162,74,.22)" stroke-width="1"/>'+
+ '<circle cx="100" cy="100" r="73" fill="rgba(0,0,0,.12)"/>';}
+function steam(x,y){return '<path d="M'+x+' '+y+' q -7 -9 0 -18 q 7 -9 0 -18" stroke="#fff" stroke-width="3" fill="none" opacity=".14" stroke-linecap="round"/>';}
+function speckle(uid,c){var s='';for(var i=0;i<10;i++){var t=i*2.39996,rr=56*Math.sqrt(i/10);var x=(100+rr*Math.cos(t)).toFixed(1),y=(100+rr*Math.sin(t)).toFixed(1);s+='<circle cx="'+x+'" cy="'+y+'" r="1.3" fill="'+c+'" opacity=".5"/>';}return s;}
+function lump(x,y,rx,ry,rot,c){var d=darken(c,.2),l=lighten(c,.32);
+ return '<g transform="rotate('+rot+' '+x+' '+y+')"><ellipse cx="'+x+'" cy="'+(y+ry*0.2)+'" rx="'+rx+'" ry="'+ry+'" fill="'+d+'"/><ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+(ry*0.92)+'" fill="'+c+'"/><ellipse cx="'+(x-rx*0.28)+'" cy="'+(y-ry*0.34)+'" rx="'+(rx*0.4)+'" ry="'+(ry*0.28)+'" fill="'+l+'" opacity=".8"/></g>';}
+function potatoCube(x,y,w,h,rot,c){var d=darken(c,.2),l=lighten(c,.3);
+ return '<g transform="rotate('+rot+' '+x+' '+y+')"><rect x="'+(x-w/2)+'" y="'+(y-h/2+1.5)+'" width="'+w+'" height="'+h+'" rx="'+(w*0.22)+'" fill="'+d+'"/><rect x="'+(x-w/2)+'" y="'+(y-h/2)+'" width="'+w+'" height="'+h+'" rx="'+(w*0.22)+'" fill="'+c+'"/><rect x="'+(x-w/2+1.6)+'" y="'+(y-h/2+1.6)+'" width="'+(w*0.42)+'" height="'+(h*0.38)+'" rx="2" fill="'+l+'" opacity=".7"/></g>';}
+function eggball(x,y,r){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#8FB85A"/><path d="M'+(x-r)+' '+(y+1)+' a '+r+' '+r+' 0 0 0 '+(2*r)+' 0" fill="#6E9A40" opacity=".7"/><ellipse cx="'+(x-r*0.3)+'" cy="'+(y-r*0.35)+'" rx="'+(r*0.34)+'" ry="'+(r*0.22)+'" fill="#CDE3A0" opacity=".85"/>';}
+function basil(x,y,s,rot){return '<g transform="rotate('+rot+' '+x+' '+y+')"><path d="M'+x+' '+y+' q '+(s*0.65)+' '+(-s)+' '+(s*1.5)+' '+(-s*0.12)+' q '+(-s*0.55)+' '+s+' '+(-s*1.5)+' '+(s*0.12)+' Z" fill="#2F6B2A"/><path d="M'+(x+s*0.2)+' '+y+' q '+(s*0.55)+' '+(-s*0.65)+' '+(s*1.15)+' '+(-s*0.12)+'" stroke="#84BE6C" stroke-width="1.1" fill="none" opacity=".75"/></g>';}
+function leaf(x,y,s,rot,col){return '<g transform="rotate('+rot+' '+x+' '+y+')"><path d="M'+x+' '+y+' q '+(s*0.7)+' '+(-s)+' '+(s*1.6)+' '+(-s*0.1)+' q '+(-s*0.55)+' '+s+' '+(-s*1.6)+' '+(s*0.1)+' Z" fill="'+col+'"/><path d="M'+(x+s*0.2)+' '+y+' q '+(s*0.6)+' '+(-s*0.7)+' '+(s*1.2)+' '+(-s*0.1)+'" stroke="'+lighten(col,.3)+'" stroke-width="1.1" fill="none" opacity=".7"/></g>';}
+function chiliSlice(x,y,r){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#BE2F28"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*0.6)+'" fill="#E2564A"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*0.3)+'" fill="#F3CBA0"/><circle cx="'+(x-r*0.18)+'" cy="'+(y-r*0.15)+'" r="'+(r*0.1)+'" fill="#6e241a"/>';}
+function chili(x,y,s,rot){return '<g transform="rotate('+rot+' '+x+' '+y+')"><path d="M'+x+' '+y+' q '+(s*1.1)+' '+(-s*0.1)+' '+(s*1.7)+' '+(s*0.6)+'" stroke="#BE2F28" stroke-width="'+(s*0.5)+'" fill="none" stroke-linecap="round"/><path d="M'+(x+s*0.1)+' '+y+' q '+(s*0.95)+' '+(-s*0.05)+' '+(s*1.45)+' '+(s*0.45)+'" stroke="#E2564A" stroke-width="'+(s*0.18)+'" fill="none" stroke-linecap="round"/><path d="M'+x+' '+y+' l '+(-s*0.35)+' '+(-s*0.5)+'" stroke="#3C7A33" stroke-width="'+(s*0.26)+'" stroke-linecap="round"/></g>';}
+function peanut(x,y,s){return '<g><ellipse cx="'+(x-s*0.35)+'" cy="'+y+'" rx="'+(s*0.62)+'" ry="'+(s*0.55)+'" fill="#E3C893"/><ellipse cx="'+(x+s*0.45)+'" cy="'+y+'" rx="'+(s*0.58)+'" ry="'+(s*0.5)+'" fill="#D9BC82"/><ellipse cx="'+(x-s*0.5)+'" cy="'+(y-s*0.2)+'" rx="'+(s*0.26)+'" ry="'+(s*0.16)+'" fill="#F1E0B8" opacity=".8"/></g>';}
+function onion(x,y){return '<g fill="none" stroke="#F0E6D8" stroke-width="2" opacity=".9"><path d="M'+(x-8)+' '+y+' q 8 -7 16 0"/><path d="M'+(x-6)+' '+(y+3)+' q 6 -5 12 0"/></g>';}
+function cilantro(x,y){return '<g fill="#3F8A37"><circle cx="'+x+'" cy="'+y+'" r="2.4"/><circle cx="'+(x+4)+'" cy="'+(y-2)+'" r="2"/><circle cx="'+(x-3)+'" cy="'+(y-3)+'" r="1.8"/><circle cx="'+(x+2)+'" cy="'+(y+3)+'" r="1.8"/></g>';}
+function garlic(x,y){return '<ellipse cx="'+x+'" cy="'+y+'" rx="3.6" ry="2.5" fill="#F3ECD8" stroke="#D8CDB0" stroke-width=".8"/>';}
+function carrotSlice(x,y){return '<g><circle cx="'+x+'" cy="'+y+'" r="4.2" fill="#E88A36"/><circle cx="'+x+'" cy="'+y+'" r="2.2" fill="#F2A85C"/></g>';}
+function babycorn(x,y){return '<g transform="rotate(-22 '+x+' '+y+')"><rect x="'+(x-3.5)+'" y="'+(y-9)+'" width="7" height="18" rx="3.5" fill="#EAC85E"/><g fill="#D8B348" opacity=".7"><circle cx="'+(x-1.5)+'" cy="'+(y-5)+'" r="1"/><circle cx="'+(x+1.5)+'" cy="'+(y-5)+'" r="1"/><circle cx="'+(x-1.5)+'" cy="'+(y-1)+'" r="1"/><circle cx="'+(x+1.5)+'" cy="'+(y-1)+'" r="1"/><circle cx="'+(x-1.5)+'" cy="'+(y+3)+'" r="1"/><circle cx="'+(x+1.5)+'" cy="'+(y+3)+'" r="1"/></g></g>';}
+function shrimp(x,y,s,rot){return '<g transform="translate('+x+' '+y+') rotate('+rot+')"><path d="M0 '+s+' q '+(-s*1.4)+' 0 '+(-s*1.4)+' '+(-s)+' q 0 '+(-s*1.3)+' '+(s*1.2)+' '+(-s*1.3)+' q '+s+' 0 '+s+' '+(s*0.8)+'" fill="none" stroke="#E27C44" stroke-width="'+(s*0.85)+'" stroke-linecap="round"/><path d="M0 '+s+' q '+(-s*1.4)+' 0 '+(-s*1.4)+' '+(-s)+' q 0 '+(-s*1.3)+' '+(s*1.2)+' '+(-s*1.3)+'" fill="none" stroke="#F4AC7C" stroke-width="'+(s*0.32)+'" stroke-linecap="round"/><path d="M '+(-s*1.4)+' '+(-s*0.1)+' l '+(-s*0.55)+' '+(-s*0.45)+' m '+(s*0.55)+' '+(s*0.45)+' l '+(-s*0.6)+' '+(s*0.15)+'" stroke="#D2602F" stroke-width="'+(s*0.3)+'" stroke-linecap="round" fill="none"/><circle cx="'+(s*0.2)+'" cy="'+(s*0.75)+'" r="'+(s*0.16)+'" fill="#6e241a"/></g>';}
+function vegFloret(x,y,r,a,b){return '<g><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+b+'"/><circle cx="'+(x-r*0.4)+'" cy="'+(y-r*0.3)+'" r="'+(r*0.45)+'" fill="'+a+'"/><circle cx="'+(x+r*0.4)+'" cy="'+(y-r*0.1)+'" r="'+(r*0.4)+'" fill="'+a+'"/><circle cx="'+x+'" cy="'+(y+r*0.4)+'" r="'+(r*0.38)+'" fill="'+a+'"/></g>';}
+function curryChunks(g){
+ if(g==='basil') return lump(86,96,15,12,-12,'#E9D6AC')+lump(118,108,13,11,18,'#E3CCA0')+lump(96,118,11,9,4,'#EAD8AE')+eggball(78,116,8)+eggball(122,86,7)+basil(90,80,15,-22)+basil(112,86,16,16)+basil(100,108,14,2)+chiliSlice(80,100,5)+chiliSlice(126,118,4.5)+chili(106,120,7,28)+cilantro(118,98);
+ if(g==='peanut') return lump(88,98,16,13,-10,'#7E5230')+lump(116,110,15,12,16,'#6E4624')+lump(100,84,13,11,0,'#8A5C36')+potatoCube(80,118,13,11,-8,'#E7B85A')+potatoCube(122,90,12,10,12,'#E0AE4E')+peanut(96,114,6)+peanut(112,124,5.5)+peanut(86,82,5.5)+cilantro(104,96)+chili(120,112,6,40);
+ if(g==='potato') return lump(86,94,14,12,-10,'#E9D2A2')+lump(116,104,13,11,14,'#E2C892')+potatoCube(96,116,13,11,6,'#F0C85A')+potatoCube(80,112,11,9,-12,'#E9BE48')+potatoCube(122,86,11,9,18,'#EEC656')+onion(104,90)+chiliSlice(126,112,4.5)+cilantro(90,124);
+ if(g==='shrimp') return shrimp(92,98,12,-18)+shrimp(116,112,11,150)+vegFloret(82,116,9,'#D7E2A0','#A6B86A')+vegFloret(122,86,8,'#D7E2A0','#A6B86A')+chili(100,118,7,18)+chiliSlice(86,90,4.5)+cilantro(110,98);
+ return '';
+}
+function dishCurry(o,uid){var a=o.art,lt=lighten(a.a,.34);
+ return svgOpen+'<defs>'+cerDef(uid)+'<radialGradient id="surf'+uid+'" cx="40%" cy="34%" r="70%"><stop offset="0" stop-color="'+lt+'"/><stop offset=".55" stop-color="'+a.a+'"/><stop offset="1" stop-color="'+a.b+'"/></radialGradient></defs>'+
+ steam(84,42)+steam(116,38)+bowlChrome(uid)+
+ '<circle cx="100" cy="100" r="70" fill="url(#surf'+uid+')"/>'+
+ '<ellipse cx="82" cy="80" rx="28" ry="15" fill="#fff" opacity=".12"/><ellipse cx="122" cy="122" rx="15" ry="7" fill="#fff" opacity=".06"/>'+
+ speckle(uid,a.b)+curryChunks(a.g)+'</svg>';}
+function grains(cx,cy,R,a,b,n,size){var g='';for(var i=0;i<n;i++){var t=i*2.39996,rr=R*Math.sqrt(i/n);var x=(cx+rr*Math.cos(t)).toFixed(1),y=(cy+rr*Math.sin(t)*0.96).toFixed(1);var c=(i%4===0)?b:a;var rot=((i*47)%180);g+='<ellipse cx="'+x+'" cy="'+y+'" rx="'+size+'" ry="'+(size*0.5).toFixed(1)+'" fill="'+c+'" transform="rotate('+rot+' '+x+' '+y+')"/>';}return g;}
+function dishRice(o,uid){var a=o.art,sticky=(o.id==='r4');
+ return svgOpen+'<defs>'+cerDef(uid)+'</defs>'+steam(92,42)+steam(112,40)+bowlChrome(uid)+
+ '<circle cx="100" cy="100" r="64" fill="'+lighten(a.a,sticky?0.04:0.06)+'"/>'+
+ '<ellipse cx="100" cy="92" rx="58" ry="46" fill="'+lighten(a.a,sticky?0.12:0.16)+'"/>'+
+ (sticky?grains(100,98,50,a.a,a.b,26,6.2):grains(100,98,56,a.a,a.b,52,4.2))+
+ '<ellipse cx="84" cy="80" rx="22" ry="11" fill="#fff" opacity="'+(sticky?0.28:0.18)+'"/></svg>';}
+function vegPile(k,A,B){
+ if(k==='bean') return '<g fill="none" stroke-linecap="round"><path d="M68 116 q 20 -34 58 -16" stroke="'+B+'" stroke-width="8"/><path d="M68 116 q 20 -34 58 -16" stroke="'+A+'" stroke-width="5"/><path d="M62 100 q 26 -26 62 -10" stroke="'+B+'" stroke-width="8"/><path d="M62 100 q 26 -26 62 -10" stroke="'+A+'" stroke-width="5"/><path d="M74 128 q 20 -22 56 -8" stroke="'+B+'" stroke-width="7"/><path d="M74 128 q 20 -22 56 -8" stroke="'+A+'" stroke-width="4.5"/></g>'+chili(122,118,7,30)+garlic(84,92)+garlic(120,96);
+ if(k==='glory') return leaf(70,104,13,-32,A)+leaf(122,100,13,30,A)+leaf(96,118,12,0,B)+'<g fill="none" stroke-linecap="round"><path d="M72 120 q 26 -10 52 -6" stroke="'+B+'" stroke-width="6"/><path d="M68 110 q 28 -8 56 -4" stroke="'+A+'" stroke-width="5"/></g>'+chili(104,88,8,-20)+chili(86,120,7,42)+garlic(110,116);
+ if(k==='kale') return leaf(74,108,15,-22,B)+leaf(98,90,17,4,A)+leaf(122,108,15,24,B)+leaf(88,122,13,-8,A)+leaf(112,122,13,12,A)+vegFloret(80,92,8,lighten(A,.2),A)+chili(120,90,7,30)+garlic(100,118);
+ return leaf(74,110,14,-26,A)+leaf(122,108,14,22,B)+leaf(96,90,15,2,A)+vegFloret(82,94,9,'#7FB04C','#5C8A36')+carrotSlice(116,90)+carrotSlice(104,120)+babycorn(86,118)+chili(122,118,7,30)+garlic(98,108);
+}
+function dishVeg(o,uid){var a=o.art;
+ return svgOpen+'<defs>'+cerDef(uid)+'</defs>'+steam(96,44)+bowlChrome(uid)+
+ '<ellipse cx="100" cy="104" rx="62" ry="56" fill="#F3ECD9"/><ellipse cx="100" cy="104" rx="62" ry="56" fill="none" stroke="rgba(0,0,0,.05)" stroke-width="2"/>'+
+ vegPile(a.k,a.a,a.b)+'<ellipse cx="82" cy="84" rx="20" ry="10" fill="#fff" opacity=".25"/></svg>';}
+function dishEgg(o,uid){return svgOpen+'<defs>'+cerDef(uid)+'<radialGradient id="yk'+uid+'" cx="40%" cy="36%" r="62%"><stop offset="0" stop-color="#FFE98C"/><stop offset=".6" stop-color="#F8B73E"/><stop offset="1" stop-color="#E68C28"/></radialGradient></defs>'+bowlChrome(uid)+
+ '<path d="M58 96 q-14 -30 20 -32 q14 -18 38 -6 q28 -3 24 24 q14 18 -8 33 q-8 19 -34 11 q-28 9 -38 -13 q-15 -8 -2 -17Z" fill="#FFFDF7" stroke="#EEE6CF" stroke-width="1.4"/>'+
+ '<circle cx="104" cy="92" r="21" fill="url(#yk'+uid+')"/><ellipse cx="96" cy="84" rx="6.5" ry="4.2" fill="#fff" opacity=".55"/></svg>';}
+function dishGreens(o,uid){return svgOpen+'<defs>'+cerDef(uid)+'</defs>'+bowlChrome(uid)+
+ '<ellipse cx="100" cy="104" rx="60" ry="54" fill="#F3ECD9"/>'+leaf(78,108,15,-24,'#6CA63E')+leaf(102,90,17,2,'#5C9636')+leaf(122,108,15,24,'#6CA63E')+leaf(90,120,13,-10,'#7CB44E')+leaf(112,122,13,12,'#7CB44E')+vegFloret(84,92,9,'#8FC25A','#5C8A36')+garlic(118,94)+chili(120,118,7,30)+'</svg>';}
+
+/* ---- souvenir art: Poy-Sian style inhalers & balms ---- */
+function prodStage(uid,glow){return '<defs><radialGradient id="gl'+uid+'" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="'+(glow||'#C9A24A')+'" stop-opacity=".26"/><stop offset="1" stop-color="'+(glow||'#C9A24A')+'" stop-opacity="0"/></radialGradient></defs>'+
+ '<circle cx="100" cy="92" r="80" fill="url(#gl'+uid+')"/>'+
+ '<ellipse cx="100" cy="170" rx="58" ry="11" fill="rgba(6,20,15,.5)"/>';}
+function octEmblem(cx,cy,r){var pts='';for(var i=0;i<8;i++){var a=(Math.PI/8)+(i*Math.PI/4);pts+=(cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1)+' ';}
+ return '<polygon points="'+pts.trim()+'" fill="none" stroke="#B58B33" stroke-width="1.4"/>'+
+  '<polygon points="'+pts.trim()+'" fill="#C9A24A" opacity=".16"/>'+
+  '<path d="M'+cx+' '+(cy-r*0.55)+' L'+(cx+r*0.16)+' '+cy+' L'+cx+' '+(cy+r*0.55)+' L'+(cx-r*0.16)+' '+cy+' Z M'+(cx-r*0.55)+' '+cy+' L'+cx+' '+(cy-r*0.16)+' L'+(cx+r*0.55)+' '+cy+' L'+cx+' '+(cy+r*0.16)+' Z" fill="#B58B33" opacity=".85"/>';}
+function gloss(x,y,w,h){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(w/2)+'" fill="#fff" opacity=".22"/>';}
+
+function artInhaler(o,uid){var cap=o.art.cap||'#C9A24A',body=o.art.body||'#7A1F2B';
+ var bd=darken(body,.18),bl=lighten(body,.16),cd=darken(cap,.2),cl=lighten(cap,.25);
+ return svgOpen+prodStage(uid,cap)+
+  '<defs><linearGradient id="ib'+uid+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="'+bd+'"/><stop offset=".45" stop-color="'+body+'"/><stop offset="1" stop-color="'+bl+'"/></linearGradient>'+
+  '<linearGradient id="ic'+uid+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="'+cd+'"/><stop offset=".5" stop-color="'+cap+'"/><stop offset="1" stop-color="'+cl+'"/></linearGradient></defs>'+
+  /* tube body */
+  '<rect x="80" y="74" width="40" height="78" rx="19" fill="url(#ib'+uid+')"/>'+
+  '<rect x="80" y="74" width="40" height="78" rx="19" fill="none" stroke="rgba(0,0,0,.15)" stroke-width="1"/>'+
+  /* cap */
+  '<rect x="80" y="50" width="40" height="34" rx="15" fill="url(#ic'+uid+')"/>'+
+  '<rect x="82" y="56" width="36" height="3" rx="1.5" fill="rgba(0,0,0,.12)"/>'+
+  '<rect x="82" y="62" width="36" height="3" rx="1.5" fill="rgba(0,0,0,.12)"/>'+
+  /* label band */
+  '<rect x="80" y="98" width="40" height="34" rx="6" fill="#F4ECD8"/>'+
+  '<rect x="80" y="98" width="40" height="34" rx="6" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="1"/>'+
+  octEmblem(100,112,9)+
+  '<rect x="86" y="124" width="28" height="2.4" rx="1.2" fill="#B58B33" opacity=".5"/>'+
+  /* highlight */
+  gloss(86,60,6,84)+
+  '</svg>';}
+
+function artBottle(o,uid){var liq=o.art.liquid||'#C9A24A',cap='#2A1E14';
+ var ld=darken(liq,.22),ll=lighten(liq,.2);
+ return svgOpen+prodStage(uid,liq)+
+  '<defs><linearGradient id="lq'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+ll+'"/><stop offset="1" stop-color="'+ld+'"/></linearGradient></defs>'+
+  /* cap */
+  '<rect x="86" y="48" width="28" height="20" rx="4" fill="'+cap+'"/>'+
+  '<rect x="86" y="48" width="28" height="20" rx="4" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>'+
+  '<rect x="90" y="66" width="20" height="8" fill="'+darken('#cfcad0',.05)+'"/>'+
+  /* bottle body (amber glass) */
+  '<path d="M84 74 q-6 6 -6 16 v44 q0 12 12 12 h20 q12 0 12 -12 v-44 q0 -10 -6 -16 Z" fill="'+ld+'" opacity=".5"/>'+
+  '<path d="M86 76 q-5 6 -5 15 v42 q0 10 10 10 h18 q10 0 10 -10 v-42 q0 -9 -5 -15 Z" fill="url(#lq'+uid+')"/>'+
+  /* label */
+  '<rect x="82" y="92" width="36" height="36" rx="5" fill="#F4ECD8"/>'+
+  octEmblem(100,104,8)+
+  '<rect x="88" y="116" width="24" height="2.2" rx="1.1" fill="#B58B33" opacity=".5"/>'+
+  '<rect x="91" y="121" width="18" height="2" rx="1" fill="#B58B33" opacity=".35"/>'+
+  gloss(88,80,5,52)+
+  '</svg>';}
+
+function artJar(o,uid){var lid=o.art.lid||'#C9A24A';
+ var ld=darken(lid,.2),ll=lighten(lid,.25);
+ return svgOpen+prodStage(uid,lid)+
+  '<defs><linearGradient id="jl'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+ll+'"/><stop offset="1" stop-color="'+ld+'"/></linearGradient></defs>'+
+  /* jar body */
+  '<rect x="64" y="98" width="72" height="46" rx="9" fill="#EFE6D0"/>'+
+  '<rect x="64" y="98" width="72" height="46" rx="9" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="1"/>'+
+  '<ellipse cx="100" cy="144" rx="36" ry="8" fill="rgba(0,0,0,.08)"/>'+
+  /* label */
+  '<rect x="72" y="106" width="56" height="30" rx="5" fill="#F7F0DD"/>'+
+  octEmblem(100,118,8)+
+  '<rect x="84" y="129" width="32" height="2.2" rx="1.1" fill="#B58B33" opacity=".5"/>'+
+  /* lid */
+  '<rect x="60" y="78" width="80" height="30" rx="10" fill="url(#jl'+uid+')"/>'+
+  '<ellipse cx="100" cy="78" rx="40" ry="11" fill="'+ll+'"/>'+
+  '<ellipse cx="100" cy="78" rx="40" ry="11" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="1"/>'+
+  '<ellipse cx="100" cy="77" rx="30" ry="7" fill="none" stroke="'+darken(lid,.1)+'" stroke-width="1.4" opacity=".6"/>'+
+  octEmblem(100,77,6)+
+  gloss(72,84,7,18)+
+  '</svg>';}
+
+function artGift(o,uid){
+ return svgOpen+prodStage(uid,'#C9A24A')+
+  '<defs><linearGradient id="gx'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16463A"/><stop offset="1" stop-color="#0C2A22"/></linearGradient>'+
+  '<linearGradient id="gtop'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D292"/><stop offset="1" stop-color="#C9A24A"/></linearGradient></defs>'+
+  /* peeking items */
+  '<g transform="translate(35 31) scale(.5)">'+artMini('inhaler','#E0B23A','#7A1F2B')+'</g>'+
+  '<g transform="translate(68 29) scale(.5)">'+artMini('jar','#C9A24A')+'</g>'+
+  /* box base */
+  '<rect x="56" y="108" width="88" height="48" rx="9" fill="url(#gx'+uid+')"/>'+
+  '<rect x="56" y="108" width="88" height="48" rx="9" fill="none" stroke="rgba(201,162,74,.5)" stroke-width="1.2"/>'+
+  /* lid */
+  '<rect x="50" y="98" width="100" height="22" rx="7" fill="url(#gtop'+uid+')"/>'+
+  '<rect x="50" y="98" width="100" height="22" rx="7" fill="none" stroke="rgba(0,0,0,.1)" stroke-width="1"/>'+
+  /* ribbon */
+  '<rect x="92" y="98" width="16" height="58" fill="#9C2A33" opacity=".9"/>'+
+  '<rect x="92" y="98" width="16" height="58" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>'+
+  /* bow */
+  '<path d="M100 96 q-18 -16 -26 -4 q-4 8 6 10 q12 2 20 -6Z" fill="#B83340"/>'+
+  '<path d="M100 96 q18 -16 26 -4 q4 8 -6 10 q-12 2 -20 -6Z" fill="#C53B49"/>'+
+  '<circle cx="100" cy="96" r="6" fill="#9C2A33"/>'+
+  octEmblem(100,132,9)+
+  '</svg>';}
+
+/* mini art used inside the gift set (no outer svg/stage) */
+function artMini(kind,c1,c2){
+ if(kind==='inhaler'){return '<rect x="80" y="74" width="40" height="78" rx="19" fill="'+(c2||'#7A1F2B')+'"/><rect x="80" y="50" width="40" height="34" rx="15" fill="'+(c1||'#C9A24A')+'"/><rect x="80" y="100" width="40" height="28" rx="6" fill="#F4ECD8"/>'+octEmblem(100,114,8)+'';}
+ if(kind==='jar'){return '<rect x="64" y="98" width="72" height="46" rx="9" fill="#EFE6D0"/><rect x="60" y="78" width="80" height="30" rx="10" fill="'+(c1||'#C9A24A')+'"/><ellipse cx="100" cy="78" rx="40" ry="11" fill="'+lighten(c1||'#C9A24A',.25)+'"/>'+octEmblem(100,120,8)+'';}
+ return '';
+}
+
+function souvenirSVG(o){var t=o.art.t,uid=o.id;
+ if(t==='inhaler')return artInhaler(o,uid);
+ if(t==='bottle')return artBottle(o,uid);
+ if(t==='jar')return artJar(o,uid);
+ if(t==='giftset')return artGift(o,uid);
+ return '';
+}
+function dishSVG(o){var t=o.art.t,uid=o.id;
+ if(t==='curry')return dishCurry(o,uid);
+ if(t==='rice')return dishRice(o,uid);
+ if(t==='veg')return dishVeg(o,uid);
+ if(t==='egg')return dishEgg(o,uid);
+ if(t==='greens')return dishGreens(o,uid);
+ return souvenirSVG(o);
+}
+function spiceMiniSVG(level){
+ if(level===0)return '<svg width="22" height="18" viewBox="0 0 22 18"><path d="M11 15 q -6 -8 0 -12 q 6 4 0 12 Z" fill="#5F9A40"/><path d="M11 4 v 10" stroke="#356E2C" stroke-width="1.1"/></svg>';
+ var g='';for(var i=0;i<level;i++){var x=3+i*8;g+='<g transform="translate('+x+' 2)"><path d="M3 3 q 4.5 1 4.5 8 q 0 4.5 -3.5 4.5 q -2.5 0 -2.5 -4.5 q 0 -5.5 1.5 -8Z" fill="#C0322B"/><path d="M3.6 3 q 3 1 3.2 6.5" stroke="#E56A5E" stroke-width="1" fill="none"/><path d="M3 3 l -1.3 -2.2" stroke="#3C7A33" stroke-width="1.5" stroke-linecap="round"/></g>';}
+ var w=3+level*8+5;return '<svg width="'+w+'" height="18" viewBox="0 0 '+w+' 18">'+g+'</svg>';
+}
+
+/* ============================================================
+   PromptPay payload + CRC (ported)
+   ============================================================ */
+function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF;}return c.toString(16).toUpperCase().padStart(4,'0');}
+function ppPayload(id,amount){var f=function(t,v){return t+String(v.length).padStart(2,'0')+v;};var n=id.replace(/[^0-9]/g,''),acc;if(n.length>=13)acc=f('02',n);else{var m='66'+n.replace(/^0/,'');m=('0000000000000'+m).slice(-13);acc=f('01',m);}var merchant=f('29','0016A000000677010111'+acc);var p='000201'+(amount?'010212':'010211')+merchant+'5303764';if(amount)p+=f('54',Number(amount).toFixed(2));p+='5802TH6304';return p+crc16(p);}
+
+/* ============================================================
+   DATA
+   ============================================================ */
+var W=function(m,n){return 'https://static.wixstatic.com/media/'+m+'/v1/fill/w_500,h_500,al_c,q_85/'+n;};
+var STEPS=[
+ {key:'curry',role:{th:'แกง',en:'Curry'},q:{th:'เลือกแกง',en:'Choose your curry'},opts:[
+  {id:'c1',th:'แกงเขียวหวาน',en:'Green Curry',price:80,img:W('30059d_06e8317b6ec04805b275a159d16e4e0b~mv2.jpg','wix%20green_3.jpg'),art:{t:'curry',a:'#9CC06A',b:'#5C8540',g:'basil'}},
+  {id:'c2',th:'พะแนง',en:'Panang Curry',price:90,img:W('30059d_ee349aa8b08142d3800bd2d2697d3ca7~mv2.jpg','wix%20panang_3.jpg'),art:{t:'curry',a:'#EC8540',b:'#BE541F',g:'shrimp'}},
+  {id:'c3',th:'มัสมั่น',en:'Massaman',price:95,img:W('30059d_2ce91e823a9f4d41be4c20fb16169fa5~mv2.jpg','wix%20mass_3.jpg'),art:{t:'curry',a:'#C08A4E',b:'#7A4E29',g:'peanut'}},
+  {id:'c4',th:'แกงกะหรี่ (สูตรกะทิ)',en:'Kati Signature',price:85,img:W('30059d_ccd07dab5efc4143b1f08a498633c633~mv2.jpg','wix%20kati_3.jpg'),art:{t:'curry',a:'#EDBC46',b:'#C28A22',g:'potato'}}]},
+ {key:'veg',role:{th:'ผัก',en:'Vegetable'},q:{th:'เลือกผัก',en:'Choose a vegetable'},opts:[
+  {id:'v1',th:'ส้มตำสลอว์',en:'Somtum Slaw',price:40,img:W('30059d_081b11b430c840d88a5c0210149072da~mv2.jpg','wix%20slaw.jpg'),art:{t:'veg',a:'#84B457',b:'#456E2A',k:'mix'}},
+  {id:'v2',th:'สลัดเคล',en:'Kale Salad',price:40,img:W('30059d_335ffd5146f344449725ce6b455f0768~mv2.jpg','wix%20kale.jpg'),art:{t:'veg',a:'#5F942F',b:'#36591D',k:'kale'}},
+  {id:'v3',th:'ถั่วแขกผัดกระเทียม',en:'Garlic Green Beans',price:40,img:W('30059d_7fede3c11feb4731bb361349bfc6a0b0~mv2.jpg','wix%20bean.jpg'),art:{t:'veg',a:'#8FB94F',b:'#52802E',k:'bean'}},
+  {id:'v4',th:'ซูกินีศรีราชา',en:'Sriracha Zucchini',price:45,img:W('30059d_05295fb825f44ea79e285e39db419a6a~mv2.jpg','wix%20m%20potato.jpg'),art:{t:'veg',a:'#5A9A40',b:'#2E5A24',k:'glory'}}]},
+ {key:'rice',role:{th:'ข้าว',en:'Base'},q:{th:'เลือกข้าว',en:'Choose your base'},opts:[
+  {id:'r1',th:'ข้าวหอมมะลิ',en:'Jasmine Rice',price:15,img:W('30059d_dd7ee7a44bf54297be0fad430cd45ebb~mv2.jpg','Jasmine%20Rice%20menu.jpg'),art:{t:'rice',a:'#FBF4E2',b:'#E0D2B2'}},
+  {id:'r2',th:'ไรซ์เบอร์รี่',en:'Rice Berry',price:25,img:W('30059d_4f28ea715e4744f1a3b8a7ea098430ca~mv2.jpg','Rice%20Berry%20menu.jpg'),art:{t:'rice',a:'#9A739F',b:'#553A5E'}},
+  {id:'r3',th:'กะหล่ำปลีซอย',en:'Mixed Cabbage',price:15,img:W('30059d_6c75e753fdc84a749d7aa02761770f3f~mv2.jpg','wix%20cabbage.jpg'),art:{t:'veg',a:'#84B457',b:'#456E2A',k:'mix'}}]}
+];
+var SPICES=[{id:'sp0',level:0,th:'ไม่เผ็ด',en:'Not spicy'},{id:'sp1',level:1,th:'เผ็ดน้อย',en:'Mild'},{id:'sp2',level:2,th:'เผ็ดกลาง',en:'Medium'},{id:'sp3',level:3,th:'เผ็ดมาก',en:'Hot'}];
+var EXTRAS=[
+ {id:'e1',th:'ไข่ต้ม',en:'Boiled Egg',price:15,img:W('30059d_3c082ac3b6824da9b3c6ff103d828cf9~mv2.jpg','wix%20egg.jpg'),art:{t:'egg'}},
+ {id:'e2',th:'ลาบเห็ด',en:'Larb Mushroom',price:30,img:W('30059d_59a48513430449bdb1e8056494f705eb~mv2.jpg','wix%20mushroom.jpg'),art:{t:'greens'}},
+ {id:'e3',th:'สลัดแตงกวา',en:'Cucumber Salad',price:20,img:W('30059d_3ee4f0c389f34c9eb5a76b66f80fff60~mv2.jpg','wix%20cucumber.jpg'),art:{t:'greens'}},
+ {id:'e4',th:'มันหวานอบ',en:'Baked Sweet Potato',price:25,img:W('30059d_4172345d789644f1bec608d22a409065~mv2.jpg','wix%20s%20potato.jpg'),art:{t:'greens'}}];
+
+/* ---- NEW: souvenirs (Poy-Sian style inhalers & balms) ---- */
+var SOUVENIRS=[
+ {id:'s1',th:'ยาดมโป๊ยเซียน มาร์คทู',en:'Poy-Sian Mark II Inhaler',price:15,
+  descTh:'ยาดมสมุนไพรสูตรคลาสสิก หอมเย็น โล่งจมูก',descEn:'Classic herbal inhaler — cooling & refreshing',art:{t:'inhaler',cap:'#E0B23A',body:'#7A1F2B'}},
+ {id:'s2',th:'ยาดมน้ำ 2 อิน 1',en:'Liquid Inhaler 2-in-1',price:25,
+  descTh:'ดมก็ได้ ทาก็ดี พกพาสะดวกติดกระเป๋า',descEn:'Sniff or dab — pocket size, two in one',art:{t:'inhaler',cap:'#1B6B59',body:'#2EAE8A'}},
+ {id:'s3',th:'ยาหม่องน้ำโป๊ยเซียน',en:'Liquid Herbal Balm',price:35,
+  descTh:'บรรเทาเมื่อยล้า วิงเวียน แมลงกัดต่อย',descEn:'Soothes aches, dizziness & insect bites',art:{t:'bottle',liquid:'#C98A2E'}},
+ {id:'s4',th:'ยาหม่องสมุนไพร ตลับกลม',en:'Herbal Balm Jar',price:30,
+  descTh:'ตลับกลมแบบดั้งเดิม ทาอุ่นสบายผ่อนคลาย',descEn:'Traditional warming balm, classic round jar',art:{t:'jar',lid:'#C9A24A'}},
+ {id:'s5',th:'เซ็ตของฝากโป๊ยเซียน',en:'Poy-Sian Gift Set',price:99,
+  descTh:'ยาดม + ยาหม่อง จัดในกล่องของขวัญ พร้อมให้',descEn:'Inhaler + balm in a ready-to-give gift box',art:{t:'giftset'}}
+];
+
+var T={
+ th:{eyebrow:'เมนูประจำบ้าน',tagline:'ข้าวราดแกงจัดเอง — เลือกทีละขั้นตามใจคุณ',
+   tabMeal:'สำรับกับข้าว',tabSouv:'ของที่ระลึก',
+   stepWord:'ขั้นที่',ofWord:'จาก',back:'ย้อนกลับ',next:'ถัดไป',one:'เลือก 1 อย่าง',
+   custom:'ปรับแต่งจานของคุณ',spice:'ระดับความเผ็ด',extra:'ของเพิ่ม (ถ้าต้องการ)',addToSet:'เพิ่มลงตะกร้า',updateSet:'อัปเดตเซ็ตนี้',
+   shopTitle:'ของที่ระลึก',shopSub:'ยาดม · ยาหม่อง โป๊ยเซียน ของฝากติดไม้ติดมือ',shopHint:'แตะเพื่อเพิ่มลงตะกร้า ซื้อคู่กับมื้ออาหารได้เลย',
+   add:'เพิ่มลงตะกร้า',added:'เพิ่มลงตะกร้าแล้ว ✓',
+   cartTitle:'ตะกร้าของคุณ',addAnother:'+ เพิ่มอีกเซ็ต',shopMore:'+ ของที่ระลึก',edit:'แก้ไข',viewCart:'ดูตะกร้า',continue:'‹ เลือกซื้อต่อ',
+   secMeal:'สำรับกับข้าว',secSouv:'ของที่ระลึก',
+   total:'รวมทั้งหมด',qty:'จำนวน',perPlate:'ราคาต่อจาน',each:'ต่อชิ้น',
+   name:'ชื่อ',room:'ห้อง / โต๊ะ',time:'เวลารับ',note:'หมายเหตุ / แพ้อาหาร',
+   namePh:'ชื่อผู้สั่ง',roomPh:'เช่น 305',notePh:'เช่น ไม่ใส่ผักชี',asap:'เร็วที่สุด',
+   wa:'ส่งออเดอร์ทาง WhatsApp',line:'ส่งทาง LINE',copy:'คัดลอกออเดอร์',copied:'คัดลอกออเดอร์แล้ว ✓',
+   payttl:'ชำระด้วย PromptPay',payScan:'สแกนเพื่อจ่าย',payOr:'หรือเงินสดปลายทาง',ppLabel:'พร้อมเพย์',
+   emptyTitle:'ตะกร้ายังว่างอยู่',emptySub:'เริ่มจัดสำรับ หรือเลือกของที่ระลึกได้เลย',
+   footHours:CONFIG.hoursTh,footPay:'รับชำระผ่านพร้อมเพย์ · เงินสดปลายทาง'},
+ en:{eyebrow:'House Menu',tagline:'Build your own curry rice — one step at a time',
+   tabMeal:'Set Meals',tabSouv:'Souvenirs',
+   stepWord:'Step',ofWord:'of',back:'Back',next:'Next',one:'Pick one',
+   custom:'Customize your plate',spice:'Spice level',extra:'Add-ons (optional)',addToSet:'Add to cart',updateSet:'Update set',
+   shopTitle:'Souvenirs',shopSub:'Poy-Sian inhalers & herbal balms — take a piece home',shopHint:'Tap to add — pairs perfectly with your meal',
+   add:'Add to cart',added:'Added to cart ✓',
+   cartTitle:'Your cart',addAnother:'+ Add another set',shopMore:'+ Souvenirs',edit:'Edit',viewCart:'View cart',continue:'‹ Continue shopping',
+   secMeal:'Set Meals',secSouv:'Souvenirs',
+   total:'Total',qty:'Qty',perPlate:'Per plate',each:'each',
+   name:'Name',room:'Room / Table',time:'Pickup time',note:'Notes / allergies',
+   namePh:'Your name',roomPh:'e.g. 305',notePh:'e.g. no coriander',asap:'ASAP',
+   wa:'Send order via WhatsApp',line:'Send via LINE',copy:'Copy order',copied:'Order copied ✓',
+   payttl:'Pay with PromptPay',payScan:'Scan to pay',payOr:'or cash on pickup',ppLabel:'PromptPay',
+   emptyTitle:'Your cart is empty',emptySub:'Build a plate or pick up a souvenir',
+   footHours:CONFIG.hoursEn,footPay:'PromptPay & cash on pickup accepted'}
+};
+
+/* index everything by id (for cart lookup + image fallback) */
+var ITEMS={};
+STEPS.forEach(function(s){s.opts.forEach(function(o){ITEMS[o.id]=o;});});
+EXTRAS.forEach(function(o){ITEMS[o.id]=o;});
+SOUVENIRS.forEach(function(o){ITEMS[o.id]=o;});
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var state={
+ lang:CONFIG.defaultLang==='en'?'en':'th',
+ view:'build',          // build | shop | cart
+ tab:'build',           // last content tab (build|shop) to return to from cart
+ step:0,
+ draft:{extras:[]},
+ cart:[],               // {kind:'set',...} | {kind:'souvenir',id,qty}
+ meta:{name:'',room:'',time:'',note:''},
+ editingIndex:null,
+ toast:''
+};
+var toastTimer=null, qrAmount=-1;
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function nm(o){return state.lang==='th'?o.th:o.en;}
+function sub(o){return state.lang==='th'?o.en:o.th;}
+function desc(o){return state.lang==='th'?o.descTh:o.descEn;}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function renderArt(o){return (o.art&&['inhaler','bottle','jar','giftset'].indexOf(o.art.t)>=0)?souvenirSVG(o):dishSVG(o);}
+function artById(id){var o=ITEMS[id];return o?renderArt(o):'';}
+window.kklArtFallback=function(img){var id=img.getAttribute('data-art');img.outerHTML='<div class="illo-svg">'+artById(id)+'</div>';};
+function illoHTML(o){
+ if(o.img){return '<img class="illo-img" src="'+esc(o.img)+'" alt="'+esc(nm(o))+'" referrerpolicy="no-referrer" loading="lazy" data-art="'+o.id+'" onerror="kklArtFallback(this)">';}
+ return '<div class="illo-svg">'+renderArt(o)+'</div>';
+}
+function spiceEl(level){return '<span style="display:inline-flex;align-items:center">'+spiceMiniSVG(level)+'</span>';}
+
+function setPrice(set){
+ if(set.kind==='souvenir'){var p=ITEMS[set.id];return p?p.price:0;}
+ var s=0;['curry','veg','rice'].forEach(function(k){if(set[k])s+=set[k].price;});
+ (set.extras||[]).forEach(function(id){var e=ITEMS[id];if(e)s+=e.price;});
+ return s;
+}
+function draftPrice(){var d=state.draft,s=0;['curry','veg','rice'].forEach(function(k){if(d[k])s+=d[k].price;});(d.extras||[]).forEach(function(id){var e=ITEMS[id];if(e)s+=e.price;});return s;}
+function grandTotal(){return state.cart.reduce(function(s,set){return s+setPrice(set)*set.qty;},0);}
+function cartCount(){return state.cart.reduce(function(s,set){return s+set.qty;},0);}
+function findSouv(id){for(var i=0;i<state.cart.length;i++){if(state.cart[i].kind==='souvenir'&&state.cart[i].id===id)return i;}return -1;}
+function souvQtyInCart(id){var i=findSouv(id);return i<0?0:state.cart[i].qty;}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+function setLang(l){state.lang=l;document.documentElement.lang=l;render();}
+function goTab(tab){state.view=tab;state.tab=tab;render();window.scrollTo(0,0);}
+function goCart(){state.view='cart';render();window.scrollTo(0,0);}
+function backToShop(){state.view=state.tab;render();window.scrollTo(0,0);}
+
+function pick(k,id){var s=STEPS.find(function(x){return x.key===k;});state.draft[k]=s.opts.find(function(o){return o.id===id;});render();}
+function pickSpice(id){state.draft.spice=SPICES.find(function(x){return x.id===id;});render();}
+function toggleExtra(id){var ex=state.draft.extras.slice();var i=ex.indexOf(id);if(i>=0)ex.splice(i,1);else ex.push(id);state.draft.extras=ex;render();}
+function next(){var step=state.step;var ok=step<3?state.draft[STEPS[step].key]:true;if(ok){state.step=step+1;render();window.scrollTo(0,0);}}
+function back(){var step=state.step;if(step>0){state.step=step-1;render();window.scrollTo(0,0);}else if(state.cart.length>0){goCart();}}
+function addToCart(){var d=state.draft;if(!d.curry||!d.veg||!d.rice||!d.spice)return;
+ var set={kind:'set',curry:d.curry,veg:d.veg,rice:d.rice,spice:d.spice,extras:d.extras.slice(),qty:1};
+ if(state.editingIndex!=null){set.qty=state.cart[state.editingIndex].qty;state.cart[state.editingIndex]=set;}
+ else state.cart.push(set);
+ state.editingIndex=null;state.draft={extras:[]};state.step=0;goCart();
+}
+function startNew(){state.view='build';state.tab='build';state.step=0;state.draft={extras:[]};state.editingIndex=null;render();window.scrollTo(0,0);}
+function editSet(idx){var set=state.cart[idx];state.view='build';state.tab='build';state.step=0;state.editingIndex=idx;
+ state.draft={curry:set.curry,veg:set.veg,rice:set.rice,spice:set.spice,extras:set.extras.slice()};render();window.scrollTo(0,0);}
+function removeSet(idx){state.cart.splice(idx,1);if(state.cart.length===0){state.view='build';state.tab='build';state.step=0;state.draft={extras:[]};state.editingIndex=null;}render();}
+function setQty(idx,d){var c=state.cart[idx];c.qty=Math.max(1,c.qty+d);render();}
+function addSouv(id){var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.cart.push({kind:'souvenir',id:id,qty:1});toast(T[state.lang].added);render();}
+function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0)state.cart.push({kind:'souvenir',id:id,qty:1});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
+function setMeta(k,v){state.meta[k]=v;}
+
+function toast(m){state.toast=m;clearTimeout(toastTimer);toastTimer=setTimeout(function(){state.toast='';render();},1800);}
+
+function orderText(){
+ var L=state.lang,t=T[L],m=state.meta;
+ var out='🍛 '+(L==='th'?'ออเดอร์ — ครัวคุณหลวง':'Order — Krua Khun Luang')+'\n';
+ if(m.name||m.room||m.time)out+=t.name+': '+(m.name||'-')+' | '+t.room+': '+(m.room||'-')+' | '+t.time+': '+(m.time||t.asap)+'\n';
+ var sets=state.cart.filter(function(c){return c.kind!=='souvenir';});
+ var souv=state.cart.filter(function(c){return c.kind==='souvenir';});
+ sets.forEach(function(set,i){
+  out+='— — — — — —\n'+(L==='th'?('เซ็ตที่ '+(i+1)):('Set '+(i+1)))+' ×'+set.qty+'\n';
+  out+='• '+nm(set.curry)+' / '+nm(set.veg)+' / '+nm(set.rice)+'\n';
+  if(set.spice)out+='  '+t.spice+': '+nm(set.spice)+'\n';
+  if(set.extras.length)out+='  '+t.extra+': '+set.extras.map(function(id){return nm(ITEMS[id]);}).join(', ')+'\n';
+ });
+ if(souv.length){out+='— — — — — —\n'+t.secSouv+'\n';souv.forEach(function(s){var p=ITEMS[s.id];out+='• '+nm(p)+' ×'+s.qty+' (฿'+(p.price*s.qty)+')\n';});}
+ if(m.note)out+=t.note+': '+m.note+'\n';
+ out+='— — — — — —\n'+t.total+': ฿'+grandTotal();
+ return out;
+}
+function sendWhatsApp(){window.open('https://wa.me/'+CONFIG.whatsappPhone+'?text='+encodeURIComponent(orderText()),'_blank');}
+function sendLine(){window.open('https://line.me/R/msg/text/?'+encodeURIComponent(orderText()),'_blank');}
+function copyOrder(){var tx=orderText();var done=function(){toast(T[state.lang].copied);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx).then(done).catch(done);}else done();}
+
+/* ============================================================
+   VIEW (HTML string builders)
+   ============================================================ */
+var root=document.getElementById('root');
+
+function headerHTML(){
+ var t=T[state.lang];
+ var building=state.view==='build', shopping=state.view==='shop';
+ var chip=(state.cart.length>0&&state.view!=='cart')?
+  ('<button class="chip" data-act="gocart" aria-label="'+esc(t.viewCart)+'">'+
+   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z"></path><path d="M8 6V4a4 4 0 0 1 8 0v2"></path></svg>'+
+   '฿'+grandTotal()+'<span class="dot">'+cartCount()+'</span></button>'):'';
+ var tabs=(state.view!=='cart')?(
+  '<div class="navrow">'+
+   '<div class="tabs" role="tablist">'+
+    '<button class="tab'+(building?' active':'')+'" data-act="tab" data-tab="build" role="tab" aria-selected="'+building+'">'+
+     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18"/><path d="M12 11V3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M6 20h12"/></svg>'+esc(t.tabMeal)+'</button>'+
+    '<button class="tab'+(shopping?' active':'')+'" data-act="tab" data-tab="shop" role="tab" aria-selected="'+shopping+'">'+
+     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'+esc(t.tabSouv)+'</button>'+
+   '</div>'+chip+
+  '</div>'):'';
+ return '<header>'+
+  '<div class="langtoggle">'+
+   '<button class="langbtn'+(state.lang==='th'?' active':'')+'" data-act="lang" data-l="th">ไทย</button>'+
+   '<button class="langbtn'+(state.lang==='en'?' active':'')+'" data-act="lang" data-l="en">EN</button>'+
+  '</div>'+
+  '<svg class="deco" viewBox="0 0 200 200" fill="none" stroke="#C9A24A" stroke-width="1.4"><path d="M100 20c-30 20-30 60 0 80 30-20 30-60 0-80zM100 100c-24 16-24 50 0 66 24-16 24-50 0-66z"></path><path d="M60 60c-20 8-26 30-16 48M140 60c20 8 26 30 16 48"></path><circle cx="100" cy="60" r="4"></circle></svg>'+
+  '<div class="brand-mono"><span class="gold-text">ล</span></div>'+
+  '<div class="eyebrow">'+esc(t.eyebrow)+'</div>'+
+  '<div class="brand-title gold-text">ครัวคุณหลวง</div>'+
+  '<div class="brand-sub">KRUA KHUN LUANG · BANGKOK</div>'+
+  '<div class="divider"><div class="ln" style="background:linear-gradient(90deg,transparent,rgba(201,162,74,.55))"></div>'+
+   '<svg width="26" height="14" viewBox="0 0 26 14"><path d="M13 1c2.5 3.5 6 5 11 5-5 1.2-8.5 2.5-11 6-2.5-3.5-6-4.8-11-6 5 0 8.5-1.5 11-5z" fill="none" stroke="#C9A24A" stroke-width="1"></path></svg>'+
+   '<div class="ln" style="background:linear-gradient(90deg,rgba(201,162,74,.55),transparent)"></div></div>'+
+  '<div class="tagline">'+esc(t.tagline)+'</div>'+
+  tabs+
+ '</header>';
+}
+
+function progressHTML(){
+ if(state.view!=='build')return '';
+ var t=T[state.lang],step=state.step;
+ var pips='';
+ for(var i=0;i<4;i++){
+  pips+='<div class="pip">'+(i<step?'<div class="fill"></div>':'')+(i===step?'<div class="sweep"></div>':'')+'</div>';
+ }
+ var roleName=(step<3?STEPS[step].role[state.lang]:t.custom);
+ var tray='';
+ ['curry','veg','rice'].forEach(function(k,i){
+  var sel=state.draft[k],active=step===i;
+  var cls='tray-slot'+(sel?' sel':'')+(active?' active':'');
+  var role=STEPS[i].role[state.lang];
+  tray+='<div class="'+cls+'"><div class="tray-thumb">'+(sel?illoHTML(sel):'')+'</div>'+
+   '<div style="min-width:0;flex:1"><div class="tray-role">'+esc(role)+'</div>'+
+   '<div class="tray-name">'+esc(sel?nm(sel):'—')+'</div></div></div>';
+ });
+ return '<div class="progress"><div class="pips">'+pips+'</div>'+
+  '<div class="steptext">'+esc(t.stepWord)+' <b>'+(step+1)+'</b> '+esc(t.ofWord)+' 4 — '+esc(roleName)+'</div>'+
+  '<div class="tray">'+tray+'</div></div>';
+}
+
+function optionCardHTML(o,selected,act,extra){
+ return '<div class="card" data-act="'+act+'" data-id="'+o.id+'"'+(extra||'')+'>'+
+  (selected?'<div class="sel-ring"></div>':'')+
+  '<div class="card-media">'+illoHTML(o)+'<div class="scrim"></div>'+
+   '<div class="price">฿'+o.price+'</div>'+
+   (selected?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+
+  '</div>'+
+  '<div class="card-body"><div class="card-name">'+esc(nm(o))+'</div><div class="card-sub">'+esc(sub(o))+'</div></div>'+
+ '</div>';
+}
+
+function buildScreenHTML(){
+ var t=T[state.lang],step=state.step;
+ if(step<3){
+  var s=STEPS[step];
+  var cards=s.opts.map(function(o){
+   var selected=!!(state.draft[s.key]&&state.draft[s.key].id===o.id);
+   return optionCardHTML(o,selected,'pick',' data-k="'+s.key+'"');
+  }).join('');
+  return '<div class="screen rise"><div class="qhead">'+esc(s.q[state.lang])+'</div>'+
+   '<div class="qsub">'+esc(t.one)+'</div><div class="grid">'+cards+'</div></div>';
+ }
+ // custom step
+ var spices=SPICES.map(function(sp){
+  var sel=!!(state.draft.spice&&state.draft.spice.id===sp.id);
+  return '<div class="spice" data-act="spice" data-id="'+sp.id+'">'+(sel?'<div class="ring"></div>':'')+
+   '<div class="ic">'+spiceMiniSVG(sp.level)+'</div><div class="nm">'+esc(nm(sp))+'</div></div>';
+ }).join('');
+ var extras=EXTRAS.map(function(o){
+  var sel=state.draft.extras.indexOf(o.id)>=0;
+  return optionCardHTML(o,sel,'extra','');
+ }).join('');
+ return '<div class="screen rise"><div class="qhead">'+esc(t.custom)+'</div>'+
+  '<div class="qsub">'+esc(t.spice)+' · '+esc(t.extra)+'</div>'+
+  '<div class="seg-label">'+esc(t.spice)+'</div><div class="spices">'+spices+'</div>'+
+  '<div class="seg-label">'+esc(t.extra)+'</div><div class="grid">'+extras+'</div></div>';
+}
+
+function shopCardHTML(o){
+ var q=souvQtyInCart(o.id);
+ var foot=q>0?
+  ('<div class="stepper"><button data-act="souvdec" data-id="'+o.id+'" aria-label="-">−</button>'+
+   '<span class="n">'+q+'</span><button data-act="souvinc" data-id="'+o.id+'" aria-label="+">+</button></div>'):
+  ('<button class="souv-add" data-act="souvadd" data-id="'+o.id+'">'+
+   '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'+esc(T[state.lang].add)+'</button>');
+ return '<div class="card flat">'+
+  '<div class="card-media">'+illoHTML(o)+'<div class="scrim"></div><div class="price">฿'+o.price+'</div>'+
+   (q>0?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+'</div>'+
+  '<div class="card-body"><div class="card-name">'+esc(nm(o))+'</div><div class="card-sub">'+esc(sub(o))+'</div>'+
+   '<div class="card-desc">'+esc(desc(o))+'</div><div class="souv-foot">'+foot+'</div></div>'+
+ '</div>';
+}
+function shopScreenHTML(){
+ var t=T[state.lang];
+ var cards=SOUVENIRS.map(shopCardHTML).join('');
+ return '<div class="screen rise"><div class="qhead">'+esc(t.shopTitle)+'</div>'+
+  '<div class="qsub">'+esc(t.shopSub)+'</div>'+
+  '<div class="seg-label" style="margin-bottom:14px">'+esc(t.shopHint)+'</div>'+
+  '<div class="grid">'+cards+'</div></div>';
+}
+
+function footerHTML(){
+ var t=T[state.lang];
+ return '<div class="footer"><div class="fname">ครัวคุณหลวง · Krua Khun Luang</div>'+
+  esc(t.footHours)+'<br>'+
+  '<span>LINE '+esc(CONFIG.lineId)+'</span><span class="fdot">·</span>'+
+  '<a href="https://wa.me/'+esc(CONFIG.whatsappPhone)+'" target="_blank" rel="noopener">WhatsApp</a><br>'+
+  '<span style="opacity:.8">'+esc(t.footPay)+'</span></div>';
+}
+
+function cartSetHTML(set,idx){
+ var t=T[state.lang];
+ var extras=set.extras.map(function(id){var e=ITEMS[id];return '<span class="badge">'+esc(nm(e))+' +฿'+e.price+'</span>';}).join('');
+ return '<div class="cart-card"><div class="cart-top">'+
+  '<div class="avatars"><span class="avatar">'+illoHTML(set.curry)+'</span><span class="avatar">'+illoHTML(set.veg)+'</span><span class="avatar">'+illoHTML(set.rice)+'</span></div>'+
+  '<div style="flex:1;min-width:0"><div class="cart-label">'+(state.lang==='th'?('เซ็ตที่ '+(idx+1)):('Set '+(idx+1)))+'</div>'+
+   '<div class="cart-name">'+esc(nm(set.curry))+' · '+esc(nm(set.veg))+' · '+esc(nm(set.rice))+'</div>'+
+   '<div class="badges"><span class="badge plain">'+(set.spice?spiceEl(set.spice.level):'')+' '+esc(set.spice?nm(set.spice):'')+'</span>'+extras+'</div></div>'+
+  '<button class="removebtn" data-act="removeset" data-i="'+idx+'" aria-label="remove">×</button></div>'+
+  '<div class="cart-foot"><button class="editbtn" data-act="editset" data-i="'+idx+'">'+esc(t.edit)+'</button>'+
+   '<div class="qtybox"><button data-act="decset" data-i="'+idx+'" aria-label="-">−</button><span class="n">'+set.qty+'</span><button data-act="incset" data-i="'+idx+'" aria-label="+">+</button></div>'+
+   '<div class="linetotal">฿'+(setPrice(set)*set.qty)+'</div></div></div>';
+}
+function cartSouvHTML(set,idx){
+ var t=T[state.lang],p=ITEMS[set.id];
+ return '<div class="cart-card"><div class="cart-top">'+
+  '<div class="avatars"><span class="avatar single">'+illoHTML(p)+'</span></div>'+
+  '<div style="flex:1;min-width:0"><div class="cart-label">'+esc(t.secSouv)+'</div>'+
+   '<div class="cart-name">'+esc(nm(p))+'</div>'+
+   '<div class="badges"><span class="badge">฿'+p.price+' '+esc(t.each)+'</span></div></div>'+
+  '<button class="removebtn" data-act="removeset" data-i="'+idx+'" aria-label="remove">×</button></div>'+
+  '<div class="cart-foot"><span></span>'+
+   '<div class="qtybox"><button data-act="decset" data-i="'+idx+'" aria-label="-">−</button><span class="n">'+set.qty+'</span><button data-act="incset" data-i="'+idx+'" aria-label="+">+</button></div>'+
+   '<div class="linetotal">฿'+(p.price*set.qty)+'</div></div></div>';
+}
+
+function cartScreenHTML(){
+ var t=T[state.lang];
+ if(state.cart.length===0){
+  return '<div class="screen"><div class="empty"><div class="big">'+esc(t.emptyTitle)+'</div><div>'+esc(t.emptySub)+'</div></div></div>';
+ }
+ var sets=[],souv=[];
+ state.cart.forEach(function(c,idx){if(c.kind==='souvenir')souv.push({c:c,idx:idx});else sets.push({c:c,idx:idx});});
+ var html='<div class="screen rise"><button class="backlink" data-act="continue">'+esc(t.continue)+'</button>'+
+  '<div class="cart-head"><h2 class="gold-text">'+esc(t.cartTitle)+'</h2></div>';
+ if(sets.length){
+  html+='<div class="secthead"><span class="ln"></span>'+esc(t.secMeal)+'<span class="ln"></span></div>';
+  sets.forEach(function(x,i){html+=cartSetHTML(x.c,x.idx);});
+ }
+ if(souv.length){
+  html+='<div class="secthead"><span class="ln"></span>'+esc(t.secSouv)+'<span class="ln"></span></div>';
+  souv.forEach(function(x){html+=cartSouvHTML(x.c,x.idx);});
+ }
+ html+='<div class="dashrow"><button class="dashbtn" data-act="addanother">'+esc(t.addAnother)+'</button>'+
+   '<button class="dashbtn" data-act="shopmore">'+esc(t.shopMore)+'</button></div>';
+ // form
+ html+='<div class="form">'+
+  '<div class="field"><label class="flabel">'+esc(t.name)+'</label>'+
+   '<input class="finput" data-field="name" value="'+esc(state.meta.name)+'" placeholder="'+esc(t.namePh)+'"></div>'+
+  '<div class="row2"><div class="field"><label class="flabel">'+esc(t.room)+'</label>'+
+    '<input class="finput" data-field="room" value="'+esc(state.meta.room)+'" placeholder="'+esc(t.roomPh)+'"></div>'+
+   '<div class="field"><label class="flabel">'+esc(t.time)+'</label>'+
+    '<select class="fselect" data-field="time">'+
+     [['',t.asap],['08:00','08:00'],['09:00','09:00'],['12:00','12:00'],['18:00','18:00'],['19:00','19:00']].map(function(o){
+       return '<option value="'+o[0]+'"'+(state.meta.time===o[0]?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+
+    '</select></div></div>'+
+  '<div class="field"><label class="flabel">'+esc(t.note)+'</label>'+
+   '<input class="finput" data-field="note" value="'+esc(state.meta.note)+'" placeholder="'+esc(t.notePh)+'"></div>'+
+ '</div>';
+ // total + pay
+ html+='<div class="totalrow"><span class="lbl">'+esc(t.total)+'</span><span class="grand gold-text">฿'+grandTotal()+'</span></div>'+
+  '<div class="paybox"><h4>'+esc(t.payttl)+'</h4><div class="qr" id="qr"></div>'+
+   '<div class="paynote">'+esc(t.payScan)+' <b>฿'+grandTotal()+'</b> · '+esc(t.ppLabel)+' <b>'+esc(CONFIG.promptpayId)+'</b><br>'+esc(t.payOr)+'</div></div>';
+ html+='</div>';
+ return html;
+}
+
+function bottomBarHTML(){
+ var t=T[state.lang];
+ if(state.view==='build'){
+  var step=state.step,isCustom=step===3;
+  var nextEnabled=isCustom?!!state.draft.spice:!!(STEPS[step]&&state.draft[STEPS[step].key]);
+  var canBack=step>0||state.cart.length>0;
+  var nextLabel=isCustom?(state.editingIndex!=null?t.updateSet:t.addToSet):t.next;
+  var dp=draftPrice();
+  return '<div class="bottombar"><div class="barrow">'+
+   (canBack?'<button class="btn btn-ghost" data-act="back">'+esc(t.back)+'</button>':'')+
+   '<button class="btn btn-primary" data-act="next"'+(nextEnabled?'':' disabled')+'>'+esc(nextLabel)+' <span style="font-size:20px;line-height:0">›</span></button>'+
+   '</div>'+(dp>0?'<div class="draftprice">'+esc(t.perPlate)+' <b>฿'+dp+'</b></div>':'')+'</div>';
+ }
+ if(state.view==='shop'){
+  if(state.cart.length===0)return '';
+  return '<div class="bottombar"><button class="btn btn-primary" style="width:100%" data-act="gocart">'+
+   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z"></path><path d="M8 6V4a4 4 0 0 1 8 0v2"></path></svg>'+
+   esc(t.viewCart)+' · ฿'+grandTotal()+'</button></div>';
+ }
+ // cart
+ if(state.cart.length===0)return '';
+ return '<div class="bottombar">'+
+  '<button class="btn btn-wa" data-act="wa"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M.06 24l1.68-6.13A11.87 11.87 0 010 11.93C0 5.35 5.35 0 11.94 0a11.86 11.86 0 018.42 3.49 11.82 11.82 0 013.49 8.43c0 6.58-5.35 11.93-11.93 11.93a11.9 11.9 0 01-5.7-1.45L.06 24zM6.6 20.13l.36.21a9.9 9.9 0 005.04 1.38 9.92 9.92 0 009.91-9.9 9.86 9.86 0 00-2.9-7.01A9.82 9.82 0 0011.94 2a9.92 9.92 0 00-9.9 9.91c0 1.76.46 3.45 1.35 4.95l.23.39-1 3.63 3.98-1.04zM17.5 14.3c-.07-.12-.26-.2-.55-.34-.29-.15-1.7-.84-1.96-.93-.26-.1-.46-.15-.65.14-.19.29-.74.93-.91 1.12-.17.19-.34.22-.62.08-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.59.13-.13.29-.34.43-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.08-.14-.65-1.56-.89-2.14-.23-.56-.47-.48-.65-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 .97-1 2.37s1.02 2.75 1.17 2.94c.14.19 2.01 3.06 4.86 4.29.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36z"></path></svg>'+esc(t.wa)+'</button>'+
+  '<div class="dashrow"><button class="btn btn-copy" data-act="copy">'+esc(t.copy)+'</button>'+
+   '<button class="btn btn-line" data-act="line">'+esc(t.line)+'</button></div>'+
+ '</div>';
+}
+
+function toastHTML(){return state.toast?('<div class="toast">'+esc(state.toast)+'</div>'):'';}
+
+function contentHTML(){
+ if(state.view==='build')return '<div class="content">'+buildScreenHTML()+footerHTML()+'</div>';
+ if(state.view==='shop')return '<div class="content">'+shopScreenHTML()+footerHTML()+'</div>';
+ return '<div class="content">'+cartScreenHTML()+'</div>';
+}
+
+function render(){
+ root.innerHTML=headerHTML()+progressHTML()+contentHTML()+bottomBarHTML()+toastHTML();
+ if(state.view==='cart')drawQR();
+}
+
+function drawQR(){
+ var el=document.getElementById('qr');if(!el)return;
+ var amt=grandTotal();el.innerHTML='';qrAmount=amt;
+ try{
+  if(window.QRCode){new window.QRCode(el,{text:ppPayload(CONFIG.promptpayId,amt),width:150,height:150,correctLevel:window.QRCode.CorrectLevel.M});}
+  else{el.textContent='PromptPay '+CONFIG.promptpayId;}
+ }catch(e){el.textContent='PromptPay '+CONFIG.promptpayId;}
+}
+
+/* ============================================================
+   EVENTS (delegated)
+   ============================================================ */
+root.addEventListener('click',function(e){
+ var el=e.target.closest('[data-act]');if(!el)return;
+ var act=el.getAttribute('data-act');
+ var id=el.getAttribute('data-id'), i=el.getAttribute('data-i'), k=el.getAttribute('data-k');
+ switch(act){
+  case 'lang': setLang(el.getAttribute('data-l')); break;
+  case 'tab': goTab(el.getAttribute('data-tab')); break;
+  case 'gocart': goCart(); break;
+  case 'continue': backToShop(); break;
+  case 'pick': pick(k,id); break;
+  case 'spice': pickSpice(id); break;
+  case 'extra': toggleExtra(id); break;
+  case 'next': (state.step===3)?addToCart():next(); break;
+  case 'back': back(); break;
+  case 'addanother': startNew(); break;
+  case 'shopmore': goTab('shop'); break;
+  case 'editset': editSet(+i); break;
+  case 'removeset': removeSet(+i); break;
+  case 'incset': setQty(+i,1); break;
+  case 'decset': setQty(+i,-1); break;
+  case 'souvadd': addSouv(id); break;
+  case 'souvinc': souvStep(id,1); break;
+  case 'souvdec': souvStep(id,-1); break;
+  case 'wa': sendWhatsApp(); break;
+  case 'line': sendLine(); break;
+  case 'copy': copyOrder(); break;
+ }
+});
+/* text/select inputs update state silently (no re-render → keeps focus) */
+root.addEventListener('input',function(e){
+ var f=e.target.getAttribute&&e.target.getAttribute('data-field');
+ if(f)setMeta(f,e.target.value);
+});
+root.addEventListener('change',function(e){
+ var f=e.target.getAttribute&&e.target.getAttribute('data-field');
+ if(f==='time')setMeta('time',e.target.value);
+});
+
+/* If QR lib loads after first cart render, draw it once ready */
+window.addEventListener('load',function(){if(state.view==='cart')drawQR();});
+
+render();
+})();
+</script>
+</body>
+</html>
