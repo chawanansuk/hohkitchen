@@ -1,6 +1,6 @@
-# ครัวคุณหลวง · Krua Khun Luang
+# House of Happiness Kitchen
 
-house of happiness kitchen — เว็บสั่งอาหารแบบจัดสำรับเอง (build-your-own curry rice)
+เว็บสั่งอาหารแบบจัดสำรับเอง (build-your-own curry rice)
 พร้อมหมวด **ของที่ระลึก** (ยาดม / ยาหม่อง สไตล์โป๊ยเซียน)
 
 เว็บไซต์เป็นไฟล์เดียวจบ (`index.html`) ไม่มีขั้นตอน build — เปิดไฟล์หรือโฮสต์ได้เลย

@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ครัวคุณหลวง · Krua Khun Luang — Bangkok</title>
-<meta name="description" content="ครัวคุณหลวง — ข้าวราดแกงจัดเอง เลือกทีละขั้น สั่งง่ายผ่าน WhatsApp / LINE ชำระด้วยพร้อมเพย์ และเลือกซื้อของที่ระลึก ยาดม-ยาหม่องโป๊ยเซียน · Krua Khun Luang: build-your-own Thai curry rice & Poy-Sian souvenirs.">
+<title>House of Happiness Kitchen — Bangkok</title>
+<meta name="description" content="House of Happiness Kitchen — ข้าวราดแกงจัดเอง เลือกทีละขั้น สั่งง่ายผ่าน WhatsApp / LINE ชำระด้วยพร้อมเพย์ และเลือกซื้อของที่ระลึก ยาดม-ยาหม่องโป๊ยเซียน · Build-your-own Thai curry rice & Poy-Sian souvenirs.">
 <meta name="theme-color" content="#0A2620">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ครัวคุณหลวง">
+<meta name="apple-mobile-web-app-title" content="House of Happiness Kitchen">
 <meta name="format-detection" content="telephone=no">
 
 <!-- Open Graph / social -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="ครัวคุณหลวง · Krua Khun Luang">
+<meta property="og:title" content="House of Happiness Kitchen">
 <meta property="og:description" content="ข้าวราดแกงจัดเอง เลือกทีละขั้น — สั่งง่าย ชำระด้วยพร้อมเพย์ พร้อมของที่ระลึก ยาดม-ยาหม่องโป๊ยเซียน">
 <meta property="og:locale" content="th_TH">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
 
 <!-- Favicon: gold "ล" monogram on emerald -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230E3128'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23C9A24A' stroke-width='2.5'/%3E%3Ctext x='50' y='66' font-family='Georgia,serif' font-size='44' font-weight='700' fill='%23E9D292' text-anchor='middle'%3E%E0%B8%A5%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230E3128'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23C9A24A' stroke-width='2.5'/%3E%3Ctext x='50' y='66' font-family='Georgia,serif' font-size='44' font-weight='700' fill='%23E9D292' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,7 +79,7 @@
   .brand-mono::after{content:"";position:absolute;inset:6px;border:1px solid rgba(201,162,74,.5);border-radius:50%}
   .brand-mono span{font-family:'Trirong',serif;font-weight:700;font-size:24px}
   .eyebrow{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600}
-  .brand-title{font-family:'Trirong',serif;font-weight:700;font-size:42px;line-height:1;margin-top:8px}
+  .brand-title{font-family:'Trirong',serif;font-weight:700;font-size:clamp(30px,8vw,42px);line-height:1.04;margin-top:8px}
   .brand-sub{font-family:'Trirong',serif;font-style:italic;font-size:14px;letter-spacing:4px;color:var(--creamdim);margin-top:9px}
   .divider{display:flex;align-items:center;gap:11px;margin-top:15px}
   .divider .ln{height:1px;flex:1}
@@ -479,7 +479,11 @@ var EXTRAS=[
  {id:'e3',th:'สลัดแตงกวา',en:'Cucumber Salad',price:20,img:W('30059d_3ee4f0c389f34c9eb5a76b66f80fff60~mv2.jpg','wix%20cucumber.jpg'),art:{t:'greens'}},
  {id:'e4',th:'มันหวานอบ',en:'Baked Sweet Potato',price:25,img:W('30059d_4172345d789644f1bec608d22a409065~mv2.jpg','wix%20s%20potato.jpg'),art:{t:'greens'}}];
 
-/* ---- NEW: souvenirs (Poy-Sian style inhalers & balms) ---- */
+/* ---- Souvenirs (ของที่ระลึก) — Poy-Sian style inhalers & balms.
+   To show a real photo for an item, add an  img:'https://.../photo.jpg'  field
+   to it below — or img:W('30059d_xxxx~mv2.jpg','name.jpg') to use the shop's
+   own Wix media library (same as the food photos). If a photo fails to load,
+   the hand-drawn SVG art is shown automatically. ---- */
 var SOUVENIRS=[
  {id:'s1',th:'ยาดมโป๊ยเซียน มาร์คทู',en:'Poy-Sian Mark II Inhaler',price:15,
   descTh:'ยาดมสมุนไพรสูตรคลาสสิก หอมเย็น โล่งจมูก',descEn:'Classic herbal inhaler — cooling & refreshing',art:{t:'inhaler',cap:'#E0B23A',body:'#7A1F2B'}},
@@ -609,7 +613,7 @@ function toast(m){state.toast=m;clearTimeout(toastTimer);toastTimer=setTimeout(f
 
 function orderText(){
  var L=state.lang,t=T[L],m=state.meta;
- var out='🍛 '+(L==='th'?'ออเดอร์ — ครัวคุณหลวง':'Order — Krua Khun Luang')+'\n';
+ var out='🍛 '+(L==='th'?'ออเดอร์ — House of Happiness Kitchen':'Order — House of Happiness Kitchen')+'\n';
  if(m.name||m.room||m.time)out+=t.name+': '+(m.name||'-')+' | '+t.room+': '+(m.room||'-')+' | '+t.time+': '+(m.time||t.asap)+'\n';
  var sets=state.cart.filter(function(c){return c.kind!=='souvenir';});
  var souv=state.cart.filter(function(c){return c.kind==='souvenir';});
@@ -655,10 +659,10 @@ function headerHTML(){
    '<button class="langbtn'+(state.lang==='en'?' active':'')+'" data-act="lang" data-l="en">EN</button>'+
   '</div>'+
   '<svg class="deco" viewBox="0 0 200 200" fill="none" stroke="#C9A24A" stroke-width="1.4"><path d="M100 20c-30 20-30 60 0 80 30-20 30-60 0-80zM100 100c-24 16-24 50 0 66 24-16 24-50 0-66z"></path><path d="M60 60c-20 8-26 30-16 48M140 60c20 8 26 30 16 48"></path><circle cx="100" cy="60" r="4"></circle></svg>'+
-  '<div class="brand-mono"><span class="gold-text">ล</span></div>'+
+  '<div class="brand-mono"><span class="gold-text">H</span></div>'+
   '<div class="eyebrow">'+esc(t.eyebrow)+'</div>'+
-  '<div class="brand-title gold-text">ครัวคุณหลวง</div>'+
-  '<div class="brand-sub">KRUA KHUN LUANG · BANGKOK</div>'+
+  '<div class="brand-title gold-text">House of Happiness</div>'+
+  '<div class="brand-sub">KITCHEN · BANGKOK</div>'+
   '<div class="divider"><div class="ln" style="background:linear-gradient(90deg,transparent,rgba(201,162,74,.55))"></div>'+
    '<svg width="26" height="14" viewBox="0 0 26 14"><path d="M13 1c2.5 3.5 6 5 11 5-5 1.2-8.5 2.5-11 6-2.5-3.5-6-4.8-11-6 5 0 8.5-1.5 11-5z" fill="none" stroke="#C9A24A" stroke-width="1"></path></svg>'+
    '<div class="ln" style="background:linear-gradient(90deg,rgba(201,162,74,.55),transparent)"></div></div>'+
@@ -752,7 +756,7 @@ function shopScreenHTML(){
 
 function footerHTML(){
  var t=T[state.lang];
- return '<div class="footer"><div class="fname">ครัวคุณหลวง · Krua Khun Luang</div>'+
+ return '<div class="footer"><div class="fname">House of Happiness Kitchen</div>'+
   esc(t.footHours)+'<br>'+
   '<span>LINE '+esc(CONFIG.lineId)+'</span><span class="fdot">·</span>'+
   '<a href="https://wa.me/'+esc(CONFIG.whatsappPhone)+'" target="_blank" rel="noopener">WhatsApp</a><br>'+
