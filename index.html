@@ -144,6 +144,8 @@
   .souv-foot{margin-top:11px}
   .souv-add{width:100%;border:1px solid var(--hairs);background:rgba(201,162,74,.1);color:var(--goldlt);font-family:inherit;font-weight:700;font-size:13px;padding:10px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
   .souv-add:hover{background:rgba(201,162,74,.2)}
+  .souv-link{display:inline-block;margin:-2px 0 9px;color:var(--goldlt);font-size:11.5px;text-decoration:none;border-bottom:1px solid var(--hair)}
+  .souv-link:hover{color:var(--gold);border-color:var(--hairs)}
   .stepper{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--hairs);border-radius:12px;overflow:hidden}
   .stepper button{width:38px;height:38px;border:none;background:rgba(201,162,74,.14);color:var(--goldlt);font-size:19px;font-weight:700;cursor:pointer}
   .stepper button:hover{background:rgba(201,162,74,.24)}
@@ -252,7 +254,12 @@ var CONFIG = {
   lineId: '@kualuang',           // LINE official id (display only)
   defaultLang: 'th',
   hoursTh: 'เปิดทุกวัน 08:00–20:00',
-  hoursEn: 'Open daily 08:00–20:00'
+  hoursEn: 'Open daily 08:00–20:00',
+  // Souvenirs can auto-load from a Shopify store's public products.json, fetched
+  // in the visitor's browser (no server needed). Falls back to the built-in
+  // hand-drawn items if the store blocks cross-origin or is unreachable.
+  // Set souvenirSource to null to always use the built-in items.
+  souvenirSource: { base:'https://mowaan.com', collections:['souvenir','ของฝากยาไทย'], max:6 }
 };
 
 /* ============================================================
@@ -502,7 +509,7 @@ var T={
    tabMeal:'สำรับกับข้าว',tabSouv:'ของที่ระลึก',
    stepWord:'ขั้นที่',ofWord:'จาก',back:'ย้อนกลับ',next:'ถัดไป',one:'เลือก 1 อย่าง',
    custom:'ปรับแต่งจานของคุณ',spice:'ระดับความเผ็ด',extra:'ของเพิ่ม (ถ้าต้องการ)',addToSet:'เพิ่มลงตะกร้า',updateSet:'อัปเดตเซ็ตนี้',
-   shopTitle:'ของที่ระลึก',shopSub:'ยาดม · ยาหม่อง โป๊ยเซียน ของฝากติดไม้ติดมือ',shopHint:'แตะเพื่อเพิ่มลงตะกร้า ซื้อคู่กับมื้ออาหารได้เลย',
+   shopTitle:'ของที่ระลึก',shopSub:'ยาดม · ยาหม่อง สมุนไพรไทย ของฝากติดไม้ติดมือ',shopHint:'แตะเพื่อเพิ่มลงตะกร้า ซื้อคู่กับมื้ออาหารได้เลย',
    add:'เพิ่มลงตะกร้า',added:'เพิ่มลงตะกร้าแล้ว ✓',
    cartTitle:'ตะกร้าของคุณ',addAnother:'+ เพิ่มอีกเซ็ต',shopMore:'+ ของที่ระลึก',edit:'แก้ไข',viewCart:'ดูตะกร้า',continue:'‹ เลือกซื้อต่อ',
    secMeal:'สำรับกับข้าว',secSouv:'ของที่ระลึก',
@@ -517,7 +524,7 @@ var T={
    tabMeal:'Set Meals',tabSouv:'Souvenirs',
    stepWord:'Step',ofWord:'of',back:'Back',next:'Next',one:'Pick one',
    custom:'Customize your plate',spice:'Spice level',extra:'Add-ons (optional)',addToSet:'Add to cart',updateSet:'Update set',
-   shopTitle:'Souvenirs',shopSub:'Poy-Sian inhalers & herbal balms — take a piece home',shopHint:'Tap to add — pairs perfectly with your meal',
+   shopTitle:'Souvenirs',shopSub:'Thai herbal inhalers & balms — take a piece home',shopHint:'Tap to add — pairs perfectly with your meal',
    add:'Add to cart',added:'Added to cart ✓',
    cartTitle:'Your cart',addAnother:'+ Add another set',shopMore:'+ Souvenirs',edit:'Edit',viewCart:'View cart',continue:'‹ Continue shopping',
    secMeal:'Set Meals',secSouv:'Souvenirs',
@@ -738,11 +745,16 @@ function shopCardHTML(o){
    '<span class="n">'+q+'</span><button data-act="souvinc" data-id="'+o.id+'" aria-label="+">+</button></div>'):
   ('<button class="souv-add" data-act="souvadd" data-id="'+o.id+'">'+
    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'+esc(T[state.lang].add)+'</button>');
+ var subLine=o.dynamic?(o.brand||''):sub(o);
+ var d=o.dynamic?'':desc(o);
+ var descHtml=d?'<div class="card-desc">'+esc(d)+'</div>':'';
+ var linkHtml=(o.dynamic&&o.url)?'<a class="souv-link" href="'+esc(o.url)+'" target="_blank" rel="noopener">'+(state.lang==='th'?'ดูรายละเอียด':'Details')+' ↗</a>':'';
  return '<div class="card flat">'+
   '<div class="card-media">'+illoHTML(o)+'<div class="scrim"></div><div class="price">฿'+o.price+'</div>'+
    (q>0?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+'</div>'+
-  '<div class="card-body"><div class="card-name">'+esc(nm(o))+'</div><div class="card-sub">'+esc(sub(o))+'</div>'+
-   '<div class="card-desc">'+esc(desc(o))+'</div><div class="souv-foot">'+foot+'</div></div>'+
+  '<div class="card-body"><div class="card-name">'+esc(nm(o))+'</div>'+
+   (subLine?'<div class="card-sub">'+esc(subLine)+'</div>':'')+
+   descHtml+linkHtml+'<div class="souv-foot">'+foot+'</div></div>'+
  '</div>';
 }
 function shopScreenHTML(){
@@ -924,7 +936,47 @@ root.addEventListener('change',function(e){
 /* If QR lib loads after first cart render, draw it once ready */
 window.addEventListener('load',function(){if(state.view==='cart')drawQR();});
 
+/* ============================================================
+   Optional: pull real souvenir products from a Shopify store's
+   public products.json (fetched in the visitor's browser). If it
+   succeeds, the shop shows the live products (photo/name/price);
+   otherwise the built-in hand-drawn items remain.
+   ============================================================ */
+function guessArt(title){
+ if(/ดม|inhaler|nasal/i.test(title)) return {t:'inhaler',cap:'#E0B23A',body:'#7A1F2B'};
+ if(/น้ำมัน|น้ำ|liquid|oil|spray|โลชั่น/i.test(title)) return {t:'bottle',liquid:'#C98A2E'};
+ return {t:'jar',lid:'#C9A24A'};
+}
+function shopImg(src){return src?src+(src.indexOf('?')>=0?'&':'?')+'width=600':src;}
+async function loadShopSouvenirs(){
+ var src=CONFIG.souvenirSource;
+ if(!src||!src.base||typeof fetch!=='function')return;
+ var seen={},items=[],max=src.max||6;
+ var cols=src.collections||[];
+ for(var i=0;i<cols.length && items.length<max;i++){
+  try{
+   var r=await fetch(src.base+'/collections/'+encodeURIComponent(cols[i])+'/products.json?limit=30',{headers:{Accept:'application/json'}});
+   if(!r.ok)continue;
+   var data=await r.json();
+   (data.products||[]).forEach(function(p){
+    if(seen[p.id]||!p.images||!p.images[0])return;
+    var v=p.variants&&p.variants[0];
+    seen[p.id]=1;
+    items.push({id:'sh_'+p.id,th:p.title,en:p.title,price:v?Math.round(parseFloat(v.price)||0):0,
+     img:shopImg(p.images[0].src),url:src.base+'/products/'+p.handle,art:guessArt(p.title),
+     dynamic:true,brand:'หมอวาน · Mowaan'});
+   });
+  }catch(e){}
+ }
+ if(items.length){
+  SOUVENIRS=items.slice(0,max);
+  SOUVENIRS.forEach(function(o){ITEMS[o.id]=o;});
+  if(state.view==='shop')render();
+ }
+}
+
 render();
+loadShopSouvenirs();
 })();
 </script>
 </body>
