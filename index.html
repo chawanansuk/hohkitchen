@@ -618,7 +618,7 @@ var state={
  toast:'',
  lastOrderNo:'', lastOrderTotal:0
 };
-var toastTimer=null, qrAmount=-1, prevView='';
+var toastTimer=null, qrAmount=-1, prevView='', _pop=false, historyKey=null;
 
 /* ---- persistence: cart/meta/lang survive refresh; first visit picks language from the browser ---- */
 var LS_KEY='hohk_v1';
@@ -643,6 +643,7 @@ function nm(o){return state.lang==='th'?o.th:o.en;}
 function sub(o){return state.lang==='th'?o.en:o.th;}
 function desc(o){return state.lang==='th'?o.descTh:o.descEn;}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function money(n){return Number(n||0).toLocaleString('en-US');}
 
 function renderArt(o){return (o.art&&['inhaler','bottle','jar','giftset'].indexOf(o.art.t)>=0)?souvenirSVG(o):dishSVG(o);}
 function artById(id){var o=ITEMS[id];return o?renderArt(o):'';}
@@ -710,9 +711,9 @@ function orderText(){
   if(set.spice)out+='  '+t.spice+': '+nm(set.spice)+'\n';
   if(set.extras.length)out+='  '+t.extra+': '+set.extras.map(function(id){return nm(ITEMS[id]);}).join(', ')+'\n';
  });
- if(souv.length){out+='— — — — — —\n'+t.secSouv+'\n';souv.forEach(function(s){var p=souvProd(s);out+='• '+nm(p)+' ×'+s.qty+' (฿'+(p.price*s.qty)+')\n';});}
+ if(souv.length){out+='— — — — — —\n'+t.secSouv+'\n';souv.forEach(function(s){var p=souvProd(s);out+='• '+nm(p)+' ×'+s.qty+' (฿'+money(p.price*s.qty)+')\n';});}
  if(m.note)out+=t.note+': '+m.note+'\n';
- out+='— — — — — —\n'+t.total+': ฿'+grandTotal();
+ out+='— — — — — —\n'+t.total+': ฿'+money(grandTotal());
  return out;
 }
 function genOrderNo(){var d=new Date(),p=function(n){return(''+n).padStart(2,'0');};return 'HH'+(''+d.getFullYear()).slice(2)+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'-'+Math.floor(100+Math.random()*900);}
@@ -740,7 +741,7 @@ function headerHTML(){
  var chip=(state.cart.length>0&&state.view!=='cart')?
   ('<button class="chip" data-act="gocart" aria-label="'+esc(t.viewCart)+'">'+
    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z"></path><path d="M8 6V4a4 4 0 0 1 8 0v2"></path></svg>'+
-   '฿'+grandTotal()+'<span class="dot">'+cartCount()+'</span></button>'):'';
+   '฿'+money(grandTotal())+'<span class="dot">'+cartCount()+'</span></button>'):'';
  var tabs=(state.view!=='cart')?(
   '<div class="navrow">'+
    '<div class="tabs" role="tablist">'+
@@ -863,7 +864,7 @@ function footerHTML(){
  return '<div class="footer">'+salaMarkSVG('ft','foot-mark')+'<div class="fname">House of Happiness Kitchen</div>'+
   '<div style="font-family:\'Trirong\',serif;font-style:italic;color:var(--creamfaint);font-size:11.5px;margin-bottom:7px">ครัวแห่งความสุข · กรุงเทพฯ</div>'+
   esc(t.footHours)+'<br>'+
-  '<span>LINE '+esc(CONFIG.lineId)+'</span><span class="fdot">·</span>'+
+  '<a href="https://line.me/R/ti/p/'+esc(CONFIG.lineId)+'" target="_blank" rel="noopener">LINE '+esc(CONFIG.lineId)+'</a><span class="fdot">·</span>'+
   '<a href="https://wa.me/'+esc(CONFIG.whatsappPhone)+'" target="_blank" rel="noopener">WhatsApp</a><br>'+
   '<span style="opacity:.8">'+esc(t.footPay)+'</span></div>';
 }
@@ -879,7 +880,7 @@ function cartSetHTML(set,idx){
   '<button class="removebtn" data-act="removeset" data-i="'+idx+'" aria-label="remove">×</button></div>'+
   '<div class="cart-foot"><button class="editbtn" data-act="editset" data-i="'+idx+'">'+esc(t.edit)+'</button>'+
    '<div class="qtybox"><button data-act="decset" data-i="'+idx+'" aria-label="-">−</button><span class="n">'+set.qty+'</span><button data-act="incset" data-i="'+idx+'" aria-label="+">+</button></div>'+
-   '<div class="linetotal">฿'+(setPrice(set)*set.qty)+'</div></div></div>';
+   '<div class="linetotal">฿'+money(setPrice(set)*set.qty)+'</div></div></div>';
 }
 function cartSouvHTML(set,idx){
  var t=T[state.lang],p=souvProd(set);
@@ -891,7 +892,7 @@ function cartSouvHTML(set,idx){
   '<button class="removebtn" data-act="removeset" data-i="'+idx+'" aria-label="remove">×</button></div>'+
   '<div class="cart-foot"><span></span>'+
    '<div class="qtybox"><button data-act="decset" data-i="'+idx+'" aria-label="-">−</button><span class="n">'+set.qty+'</span><button data-act="incset" data-i="'+idx+'" aria-label="+">+</button></div>'+
-   '<div class="linetotal">฿'+(p.price*set.qty)+'</div></div></div>';
+   '<div class="linetotal">฿'+money(p.price*set.qty)+'</div></div></div>';
 }
 
 function cartScreenHTML(){
@@ -928,9 +929,9 @@ function cartScreenHTML(){
    '<input class="finput" data-field="note" value="'+esc(state.meta.note)+'" placeholder="'+esc(t.notePh)+'" autocomplete="off" enterkeyhint="done"></div>'+
  '</div>';
  // total + pay
- html+='<div class="totalrow"><span class="lbl">'+esc(t.total)+'</span><span class="grand gold-text">฿'+grandTotal()+'</span></div>'+
+ html+='<div class="totalrow"><span class="lbl">'+esc(t.total)+'</span><span class="grand gold-text">฿'+money(grandTotal())+'</span></div>'+
   '<div class="paybox"><h4>'+esc(t.payttl)+'</h4><div class="qr" id="qr"><span class="qr-load"></span></div>'+
-   '<div class="paynote">'+esc(t.payScan)+' <b>฿'+grandTotal()+'</b> · '+esc(t.ppLabel)+' <b>'+esc(CONFIG.promptpayId)+'</b><br>'+esc(t.payOr)+'</div></div>';
+   '<div class="paynote">'+esc(t.payScan)+' <b>฿'+money(grandTotal())+'</b> · '+esc(t.ppLabel)+' <b>'+esc(CONFIG.promptpayId)+'</b><br>'+esc(t.payOr)+'</div></div>';
  html+='</div>';
  return html;
 }
@@ -947,13 +948,13 @@ function bottomBarHTML(){
   return '<div class="bottombar"><div class="barrow">'+
    (canBack?'<button class="btn btn-ghost" data-act="back">'+esc(t.back)+'</button>':'')+
    '<button class="btn btn-primary" data-act="next"'+(nextEnabled?'':' disabled')+'>'+esc(nextLabel)+' <span style="font-size:20px;line-height:0">›</span></button>'+
-   '</div>'+(dp>0?'<div class="draftprice">'+esc(t.perPlate)+' <b>฿'+dp+'</b></div>':'')+'</div>';
+   '</div>'+(dp>0?'<div class="draftprice">'+esc(t.perPlate)+' <b>฿'+money(dp)+'</b></div>':'')+'</div>';
  }
  if(state.view==='shop'){
   if(state.cart.length===0)return '';
   return '<div class="bottombar"><button class="btn btn-primary" style="width:100%" data-act="gocart">'+
    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z"></path><path d="M8 6V4a4 4 0 0 1 8 0v2"></path></svg>'+
-   esc(t.viewCart)+' · ฿'+grandTotal()+'</button></div>';
+   esc(t.viewCart)+' · ฿'+money(grandTotal())+'</button></div>';
  }
  // cart
  if(state.cart.length===0)return '';
@@ -973,7 +974,7 @@ function doneScreenHTML(){
   '<h2 class="gold-text" data-focus tabindex="-1">'+esc(t.thankTitle)+'</h2>'+
   '<div class="done-sub">'+esc(t.thankSub)+'</div>'+
   '<div class="done-card"><div class="done-row"><span>'+esc(t.refLabel)+'</span><b>'+esc(state.lastOrderNo)+'</b></div>'+
-   '<div class="done-row"><span>'+esc(t.total)+'</span><b class="gold-text">฿'+state.lastOrderTotal+'</b></div></div>'+
+   '<div class="done-row"><span>'+esc(t.total)+'</span><b class="gold-text">฿'+money(state.lastOrderTotal)+'</b></div></div>'+
   '<div class="done-note">'+esc(t.thankNote)+'</div>'+
   '<button class="btn btn-primary" style="width:100%;margin-top:18px" data-act="neworder">'+esc(t.newOrder)+'</button>'+
   '<button class="backlink" data-act="gocart" style="margin-top:12px">'+esc(t.backCart)+'</button>'+
@@ -990,6 +991,7 @@ function render(){
  root.innerHTML=headerHTML()+progressHTML()+contentHTML()+bottomBarHTML()+toastHTML();
  if(state.view==='cart')drawQR();
  persist();
+ syncHistory();
  if(state.view!==prevView){prevView=state.view;var h=root.querySelector('[data-focus]');if(h){try{h.focus({preventScroll:true});}catch(e){}}}
 }
 
@@ -1047,6 +1049,10 @@ root.addEventListener('change',function(e){
 /* If QR lib loads after first cart render, draw it once ready */
 window.addEventListener('load',function(){if(state.view==='cart')drawQR();});
 
+/* ---- browser Back/Forward navigates between screens (build/shop/cart/done) ---- */
+function syncHistory(){var key=state.view;if(key===historyKey)return;var snap={v:state.view,t:state.tab};try{if(historyKey===null)history.replaceState(snap,'');else if(!_pop)history.pushState(snap,'');}catch(e){}historyKey=key;}
+window.addEventListener('popstate',function(e){var s=e.state;if(!s)return;_pop=true;state.view=s.v||'build';if(s.t)state.tab=s.t;if(state.view==='build'||state.view==='shop')state.tab=state.view;render();_pop=false;});
+
 /* ============================================================
    Optional: pull real souvenir products from a Shopify store's
    public products.json (fetched in the visitor's browser). If it
@@ -1088,6 +1094,9 @@ async function loadShopSouvenirs(){
 
 /* optional privacy-friendly analytics (Plausible) */
 (function(){var d=CONFIG.plausibleDomain;if(d){var s=document.createElement('script');s.defer=true;s.setAttribute('data-domain',d);s.src='https://plausible.io/js/script.js';document.head.appendChild(s);}})();
+
+/* deep-link / PWA shortcut launch: ?go=shop|cart */
+(function(){try{var go=new URLSearchParams(location.search).get('go');if(go==='shop'){state.view='shop';state.tab='shop';}else if(go==='cart'&&state.cart.length){state.view='cart';}}catch(e){}})();
 
 render();
 loadShopSouvenirs();
