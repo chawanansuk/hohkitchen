@@ -717,7 +717,7 @@ function orderText(){
  return out;
 }
 function genOrderNo(){var d=new Date(),p=function(n){return(''+n).padStart(2,'0');};return 'HH'+(''+d.getFullYear()).slice(2)+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'-'+Math.floor(100+Math.random()*900);}
-function sendOrderWebhook(channel,txt){var url=CONFIG.orderWebhook;if(!url)return;try{fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:state.lastOrderNo,channel:channel,total:grandTotal(),lang:state.lang,name:state.meta.name,room:state.meta.room,time:state.meta.time,note:state.meta.note,items:txt,at:new Date().toISOString()})});}catch(e){}}
+function sendOrderWebhook(channel,txt){var url=CONFIG.orderWebhook;if(!url)return;try{fetch(url,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({ref:state.lastOrderNo,channel:channel,total:grandTotal(),lang:state.lang,name:state.meta.name,room:state.meta.room,time:state.meta.time,note:state.meta.note,items:txt,at:new Date().toISOString()})});}catch(e){}}
 function track(ev,props){try{if(window.plausible)window.plausible(ev,{props:props||{}});}catch(e){}}
 function submitOrder(channel){
  if(!state.lastOrderNo)state.lastOrderNo=genOrderNo();
