@@ -20,7 +20,7 @@
  * Test: open the /exec URL in a browser — it should reply {"ok":true,...}.
  */
 
-var HEADERS = ['Time', 'Ref', 'Channel', 'Name', 'Room/Table', 'Pickup', 'Total (฿)', 'Note', 'Items', 'Lang'];
+var HEADERS = ['Time', 'Ref', 'Channel', 'Name', 'Phone', 'Room/Table', 'Pickup', 'Total (฿)', 'Note', 'Items', 'Lang'];
 
 function doPost(e) {
   try {
@@ -35,6 +35,7 @@ function doPost(e) {
       data.ref || '',
       data.channel || '',
       data.name || '',
+      data.phone || '',
       data.room || '',
       data.time || '',
       data.total || '',
