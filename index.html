@@ -38,7 +38,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Pinyon+Script&family=Trirong:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Pinyon+Script&family=Trirong:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
 <!-- PromptPay QR generator (qrcodejs) — bundled locally (offline-capable). -->
 <script src="qrcode.min.js" defer></script>
@@ -111,7 +111,7 @@
   .tab svg{width:15px;height:15px}
   .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hairs);background:rgba(201,162,74,.12);color:var(--goldlt);
     font-family:inherit;font-weight:700;font-size:13px;padding:9px 14px;border-radius:99px;cursor:pointer;white-space:nowrap;position:relative}
-  .chip .dot{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:linear-gradient(135deg,var(--gold),var(--goldlt));color:#0A2620;font-size:11px;font-weight:800;display:grid;place-items:center}
+  .chip .dot{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:linear-gradient(135deg,var(--gold),var(--goldlt));color:#0A2620;font-size:11px;font-weight:700;display:grid;place-items:center}
 
   /* ---- progress ---- */
   .progress{padding:8px 26px 2px;position:relative;z-index:1}
@@ -263,6 +263,13 @@
   }
   /* ---- QR loading shimmer ---- */
   .qr-load{display:block;width:134px;height:134px;border-radius:8px;background:linear-gradient(100deg,#e9e3d3 30%,#fff 50%,#e9e3d3 70%);background-size:220% 100%;animation:kklShimmer 1.2s linear infinite}
+  /* ---- plates stepper (customize step) ---- */
+  .plates-row{display:flex;align-items:center;gap:14px;margin:2px 2px 8px}
+  .qtybox.big button{width:44px;height:44px;font-size:21px}
+  .qtybox.big .n{min-width:44px;font-size:18px}
+  .plates-hint{font-size:12px;color:var(--creamfaint);line-height:1.5;flex:1}
+  /* ---- photo loading shimmer (removed when SVG fallback kicks in) ---- */
+  .media-img{background:linear-gradient(100deg,#10352A 32%,#17473A 50%,#10352A 68%);background-size:220% 100%;animation:kklShimmer 1.4s linear infinite}
   .qrsave{margin-top:12px;border:1px solid var(--hairs);background:rgba(201,162,74,.1);color:var(--goldlt);font-family:inherit;font-weight:700;font-size:12.5px;padding:9px 16px;border-radius:99px;cursor:pointer}
   .qrsave:hover{background:rgba(201,162,74,.2)}
   /* ---- compact header (cart / done) ---- */
@@ -587,7 +594,8 @@ var T={
    emptyTitle:'ตะกร้ายังว่างอยู่',emptySub:'เริ่มจัดสำรับ หรือเลือกของที่ระลึกได้เลย',
    footHours:CONFIG.hoursTh,footPay:'รับชำระผ่านพร้อมเพย์ · เงินสดปลายทาง',
    thankTitle:'ขอบคุณ! ส่งออเดอร์แล้ว',thankSub:'ทางร้านได้รับคำสั่งซื้อของคุณแล้ว',thankNote:'ทางร้านจะติดต่อกลับเพื่อยืนยันและนัดรับ',refLabel:'เลขอ้างอิง',newOrder:'เริ่มออเดอร์ใหม่',backCart:'‹ กลับไปแก้ไข / ส่งซ้ำ',
-   saveQr:'บันทึกรูป QR ไว้สแกน',qrSaved:'บันทึก QR แล้ว ✓',shareShop:'แชร์ร้านให้เพื่อน ♡',linkCopied:'คัดลอกลิงก์ร้านแล้ว ✓'},
+   saveQr:'บันทึกรูป QR ไว้สแกน',qrSaved:'บันทึก QR แล้ว ✓',shareShop:'แชร์ร้านให้เพื่อน ♡',linkCopied:'คัดลอกลิงก์ร้านแล้ว ✓',
+   plates:'จำนวนจาน',platesHint:'เซ็ตเดียวกันหลายจาน กดเพิ่มได้เลย'},
  en:{eyebrow:'House Menu',tagline:'Build your own curry rice — one step at a time',
    tabMeal:'Set Meals',tabSouv:'Souvenirs',
    stepWord:'Step',ofWord:'of',back:'Back',next:'Next',one:'Pick one',
@@ -604,7 +612,8 @@ var T={
    emptyTitle:'Your cart is empty',emptySub:'Build a plate or pick up a souvenir',
    footHours:CONFIG.hoursEn,footPay:'PromptPay & cash on pickup accepted',
    thankTitle:'Thank you! Order sent',thankSub:'We have received your order',thankNote:'We will contact you to confirm and arrange pickup',refLabel:'Reference',newOrder:'Start a new order',backCart:'‹ Back to edit / resend',
-   saveQr:'Save QR to scan later',qrSaved:'QR saved ✓',shareShop:'Share with friends ♡',linkCopied:'Shop link copied ✓'}
+   saveQr:'Save QR to scan later',qrSaved:'QR saved ✓',shareShop:'Share with friends ♡',linkCopied:'Shop link copied ✓',
+   plates:'Number of plates',platesHint:'Same set, several plates — tap +'}
 };
 
 /* index everything by id (for cart lookup + image fallback) */
@@ -621,7 +630,7 @@ var state={
  view:'build',          // build | shop | cart
  tab:'build',           // last content tab (build|shop) to return to from cart
  step:0,
- draft:{extras:[]},
+ draft:{extras:[],qty:1},
  cart:[],               // {kind:'set',...} | {kind:'souvenir',id,qty}
  meta:{name:'',room:'',time:'',note:''},
  editingIndex:null,
@@ -657,13 +666,21 @@ function money(n){return Number(n||0).toLocaleString('en-US');}
 
 function renderArt(o){return (o.art&&['inhaler','bottle','jar','giftset'].indexOf(o.art.t)>=0)?souvenirSVG(o):dishSVG(o);}
 function artById(id){var o=ITEMS[id];return o?renderArt(o):'';}
-window.kklArtFallback=function(img){var id=img.getAttribute('data-art');img.outerHTML='<div class="illo-svg">'+artById(id)+'</div>';};
+window.kklArtFallback=function(img){var id=img.getAttribute('data-art');var p=img.parentNode;img.outerHTML='<div class="illo-svg">'+artById(id)+'</div>';if(p&&p.classList)p.classList.remove('media-img');};
 function wixSrcset(u){if(!/wixstatic\.com/.test(u)||!/w_\d+,h_\d+/.test(u))return '';var mk=function(w){return u.replace(/w_\d+,h_\d+/,'w_'+w+',h_'+w)+' '+w+'w';};return ' srcset="'+[mk(320),mk(500),mk(800)].join(', ')+'" sizes="(min-width:840px) 320px, 46vw"';}
 function illoHTML(o){
  if(o.img){return '<img class="illo-img" src="'+esc(o.img)+'"'+wixSrcset(o.img)+' alt="'+esc(nm(o))+'" referrerpolicy="no-referrer" loading="lazy" decoding="async" data-art="'+o.id+'" onerror="kklArtFallback(this)">';}
  return '<div class="illo-svg">'+renderArt(o)+'</div>';
 }
 function spiceEl(level){return '<span style="display:inline-flex;align-items:center">'+spiceMiniSVG(level)+'</span>';}
+/* faint placeholder glyphs for empty tray slots */
+function trayGlyph(k){
+ var g='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(201,162,74,.5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">';
+ if(k==='curry')g+='<path d="M4 11h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.4 1.6-1.6 1.6-3M14 8c0-1.4 1.6-1.6 1.6-3"/>';
+ else if(k==='veg')g+='<path d="M6 18C6 9.5 13 5.5 19 5.5c0 6-4 12.5-13 12.5Z"/><path d="M6 18c2.6-5 6.5-8 10-9.5"/>';
+ else g+='<ellipse cx="12" cy="14.5" rx="7.5" ry="4.5"/><path d="M9.6 8.6C8.8 7.4 9.8 6.4 9.8 5.4M12.6 8.4c-.8-1.2.2-2.2.2-3.2M15.4 8.8c-.7-1.1.2-2 .2-3"/>';
+ return g+'</svg>';
+}
 
 function setPrice(set){
  if(set.kind==='souvenir'){var p=souvProd(set);return p?p.price:0;}
@@ -692,15 +709,15 @@ function toggleExtra(id){var ex=state.draft.extras.slice();var i=ex.indexOf(id);
 function next(){var step=state.step;var ok=step<3?state.draft[STEPS[step].key]:true;if(ok){state.step=step+1;render();window.scrollTo(0,0);}}
 function back(){var step=state.step;if(step>0){state.step=step-1;render();window.scrollTo(0,0);}else if(state.cart.length>0){goCart();}}
 function addToCart(){var d=state.draft;if(!d.curry||!d.veg||!d.rice||!d.spice)return;
- var set={kind:'set',curry:d.curry,veg:d.veg,rice:d.rice,spice:d.spice,extras:d.extras.slice(),qty:1};
- if(state.editingIndex!=null){set.qty=state.cart[state.editingIndex].qty;state.cart[state.editingIndex]=set;}
+ var set={kind:'set',curry:d.curry,veg:d.veg,rice:d.rice,spice:d.spice,extras:d.extras.slice(),qty:Math.max(1,d.qty||1)};
+ if(state.editingIndex!=null){state.cart[state.editingIndex]=set;}
  else state.cart.push(set);
- state.editingIndex=null;state.draft={extras:[]};state.step=0;goCart();
+ state.editingIndex=null;state.draft={extras:[],qty:1};state.step=0;goCart();
 }
-function startNew(){state.view='build';state.tab='build';state.step=0;state.draft={extras:[]};state.editingIndex=null;render();window.scrollTo(0,0);}
+function startNew(){state.view='build';state.tab='build';state.step=0;state.draft={extras:[],qty:1};state.editingIndex=null;render();window.scrollTo(0,0);}
 function editSet(idx){var set=state.cart[idx];state.view='build';state.tab='build';state.step=0;state.editingIndex=idx;
- state.draft={curry:set.curry,veg:set.veg,rice:set.rice,spice:set.spice,extras:set.extras.slice()};render();window.scrollTo(0,0);}
-function removeSet(idx){state.cart.splice(idx,1);if(state.cart.length===0){state.view='build';state.tab='build';state.step=0;state.draft={extras:[]};state.editingIndex=null;}render();}
+ state.draft={curry:set.curry,veg:set.veg,rice:set.rice,spice:set.spice,extras:set.extras.slice(),qty:set.qty||1};render();window.scrollTo(0,0);}
+function removeSet(idx){state.cart.splice(idx,1);if(state.cart.length===0){state.view='build';state.tab='build';state.step=0;state.draft={extras:[],qty:1};state.editingIndex=null;}render();}
 function setQty(idx,d){var c=state.cart[idx];c.qty=Math.max(1,c.qty+d);render();}
 function addSouv(id){var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});toast(T[state.lang].added);render();}
 function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0)state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
@@ -770,7 +787,7 @@ function submitOrder(channel){
  state.lastOrderTotal=grandTotal();state.view='done';render();window.scrollTo(0,0);
 }
 function copyOrder(){if(!state.lastOrderNo)state.lastOrderNo=genOrderNo();var tx=orderText();var done=function(){toast(T[state.lang].copied);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx).then(done).catch(done);}else done();sendOrderWebhook('copy',tx);track('Order',{channel:'copy'});}
-function newOrder(){state.cart=[];state.meta={name:'',room:'',time:'',note:''};state.lastOrderNo='';state.draft={extras:[]};state.step=0;state.editingIndex=null;state.view='build';state.tab='build';persist();render();window.scrollTo(0,0);}
+function newOrder(){state.cart=[];state.meta={name:'',room:'',time:'',note:''};state.lastOrderNo='';state.draft={extras:[],qty:1};state.step=0;state.editingIndex=null;state.view='build';state.tab='build';persist();render();window.scrollTo(0,0);}
 
 /* ============================================================
    VIEW (HTML string builders)
@@ -834,7 +851,7 @@ function progressHTML(){
   var sel=state.draft[k],active=step===i;
   var cls='tray-slot'+(sel?' sel':'')+(active?' active':'');
   var role=STEPS[i].role[state.lang];
-  tray+='<div class="'+cls+'"><div class="tray-thumb">'+(sel?illoHTML(sel):'')+'</div>'+
+  tray+='<div class="'+cls+'"><div class="tray-thumb">'+(sel?illoHTML(sel):trayGlyph(k))+'</div>'+
    '<div style="min-width:0;flex:1"><div class="tray-role">'+esc(role)+'</div>'+
    '<div class="tray-name">'+esc(sel?nm(sel):'—')+'</div></div></div>';
  });
@@ -846,7 +863,7 @@ function progressHTML(){
 function optionCardHTML(o,selected,act,extra){
  return '<div class="card" data-act="'+act+'" data-id="'+o.id+'"'+(extra||'')+'>'+
   (selected?'<div class="sel-ring"></div>':'')+
-  '<div class="card-media">'+illoHTML(o)+'<div class="scrim"></div>'+
+  '<div class="card-media'+(o.img?' media-img':'')+'">'+illoHTML(o)+'<div class="scrim"></div>'+
    '<div class="price">฿'+o.price+'</div>'+
    (selected?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+
   '</div>'+
@@ -878,7 +895,14 @@ function buildScreenHTML(){
  return '<div class="screen rise"><div class="qhead" data-focus tabindex="-1">'+esc(t.custom)+'</div>'+
   '<div class="qsub">'+esc(t.spice)+' · '+esc(t.extra)+'</div>'+
   '<div class="seg-label">'+esc(t.spice)+'</div><div class="spices">'+spices+'</div>'+
-  '<div class="seg-label">'+esc(t.extra)+'</div><div class="grid">'+extras+'</div></div>';
+  '<div class="seg-label">'+esc(t.extra)+'</div><div class="grid">'+extras+'</div>'+
+  '<div class="seg-label" style="margin-top:22px">'+esc(t.plates)+'</div>'+
+  '<div class="plates-row"><div class="qtybox big">'+
+   '<button data-act="draftqty" data-d="-1" aria-label="-">−</button>'+
+   '<span class="n">'+(state.draft.qty||1)+'</span>'+
+   '<button data-act="draftqty" data-d="1" aria-label="+">+</button></div>'+
+   '<span class="plates-hint">'+esc(t.platesHint)+'</span></div>'+
+  '</div>';
 }
 
 function shopCardHTML(o){
@@ -893,7 +917,7 @@ function shopCardHTML(o){
  var descHtml=d?'<div class="card-desc">'+esc(d)+'</div>':'';
  var linkHtml=(o.dynamic&&o.url)?'<a class="souv-link" href="'+esc(o.url)+'" target="_blank" rel="noopener">'+(state.lang==='th'?'ดูรายละเอียด':'Details')+' ↗</a>':'';
  return '<div class="card flat">'+
-  '<div class="card-media">'+illoHTML(o)+'<div class="scrim"></div><div class="price">฿'+o.price+'</div>'+
+  '<div class="card-media'+(o.img?' media-img':'')+'">'+illoHTML(o)+'<div class="scrim"></div><div class="price">฿'+o.price+'</div>'+
    (q>0?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+'</div>'+
   '<div class="card-body"><div class="card-name">'+esc(nm(o))+'</div>'+
    (subLine?'<div class="card-sub">'+esc(subLine)+'</div>':'')+
@@ -999,7 +1023,7 @@ function bottomBarHTML(){
   return '<div class="bottombar"><div class="barrow">'+
    (canBack?'<button class="btn btn-ghost" data-act="back">'+esc(t.back)+'</button>':'')+
    '<button class="btn btn-primary" data-act="next"'+(nextEnabled?'':' disabled')+'>'+esc(nextLabel)+' <span style="font-size:20px;line-height:0">›</span></button>'+
-   '</div>'+(dp>0?'<div class="draftprice">'+esc(t.perPlate)+' <b>฿'+money(dp)+'</b></div>':'')+'</div>';
+   '</div>'+(dp>0?'<div class="draftprice">'+esc(t.perPlate)+' <b>฿'+money(dp)+'</b>'+((state.draft.qty||1)>1?' × '+state.draft.qty+' = <b>฿'+money(dp*state.draft.qty)+'</b>':'')+'</div>':'')+'</div>';
  }
  if(state.view==='shop'){
   if(state.cart.length===0)return '';
@@ -1088,6 +1112,7 @@ root.addEventListener('click',function(e){
   case 'neworder': newOrder(); break;
   case 'saveqr': saveQR(); break;
   case 'share': shareShop(); break;
+  case 'draftqty': state.draft.qty=Math.max(1,(state.draft.qty||1)+(+el.getAttribute('data-d')||0)); render(); break;
  }
 });
 /* text/select inputs update state silently (no re-render → keeps focus) */
@@ -1145,6 +1170,15 @@ async function loadShopSouvenirs(){
   if(state.view==='shop')render();
  }
 }
+
+/* SEO: inject schema.org Menu built from the live menu data (single source of truth) */
+(function(){try{
+ var toItem=function(o){return {'@type':'MenuItem',name:o.th,alternateName:o.en,offers:{'@type':'Offer',price:String(o.price),priceCurrency:'THB'}};};
+ var sections=STEPS.map(function(s){return {'@type':'MenuSection',name:s.role.th+' · '+s.role.en,hasMenuItem:s.opts.map(toItem)};});
+ sections.push({'@type':'MenuSection',name:'ของเพิ่ม · Add-ons',hasMenuItem:EXTRAS.map(toItem)});
+ var ld={'@context':'https://schema.org','@type':'Menu',name:'House of Happiness Kitchen — Menu',inLanguage:'th',hasMenuSection:sections};
+ var sc=document.createElement('script');sc.type='application/ld+json';sc.textContent=JSON.stringify(ld);document.head.appendChild(sc);
+}catch(e){}})();
 
 /* optional privacy-friendly analytics (Plausible) */
 (function(){var d=CONFIG.plausibleDomain;if(d){var s=document.createElement('script');s.defer=true;s.setAttribute('data-domain',d);s.src='https://plausible.io/js/script.js';document.head.appendChild(s);}})();
