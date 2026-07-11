@@ -262,7 +262,15 @@
     .btn:active,.souv-add:active,.dashbtn:active,.chip:active,.langbtn:active{transform:translateY(1px) scale(.985)}
   }
   /* ---- QR loading shimmer ---- */
-  .qr-load{display:block;width:150px;height:150px;border-radius:8px;background:linear-gradient(100deg,#e9e3d3 30%,#fff 50%,#e9e3d3 70%);background-size:220% 100%;animation:kklShimmer 1.2s linear infinite}
+  .qr-load{display:block;width:134px;height:134px;border-radius:8px;background:linear-gradient(100deg,#e9e3d3 30%,#fff 50%,#e9e3d3 70%);background-size:220% 100%;animation:kklShimmer 1.2s linear infinite}
+  .qrsave{margin-top:12px;border:1px solid var(--hairs);background:rgba(201,162,74,.1);color:var(--goldlt);font-family:inherit;font-weight:700;font-size:12.5px;padding:9px 16px;border-radius:99px;cursor:pointer}
+  .qrsave:hover{background:rgba(201,162,74,.2)}
+  /* ---- compact header (cart / done) ---- */
+  .hdr-compact{padding:22px 26px 6px}
+  .mini-brand{display:flex;align-items:center;gap:12px}
+  .mini-mark{width:40px;height:40px;flex:0 0 auto;filter:drop-shadow(0 4px 10px rgba(201,162,74,.25))}
+  .mini-eyebrow{font-family:'Cinzel',serif;font-size:12.5px;letter-spacing:3px;color:var(--goldlt);font-weight:600}
+  .mini-kitchen{font-family:'Trirong',serif;font-style:italic;font-size:11px;color:var(--creamdim);letter-spacing:1.5px;margin-top:3px}
   /* ---- order success screen ---- */
   .done{text-align:center;padding:26px 14px 10px}
   .done-badge{width:64px;height:64px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),var(--goldlt));box-shadow:0 0 30px rgba(201,162,74,.5);animation:kklPop .4s ease}
@@ -578,7 +586,8 @@ var T={
    payttl:'ชำระด้วย PromptPay',payScan:'สแกนเพื่อจ่าย',payOr:'หรือเงินสดปลายทาง',ppLabel:'พร้อมเพย์',
    emptyTitle:'ตะกร้ายังว่างอยู่',emptySub:'เริ่มจัดสำรับ หรือเลือกของที่ระลึกได้เลย',
    footHours:CONFIG.hoursTh,footPay:'รับชำระผ่านพร้อมเพย์ · เงินสดปลายทาง',
-   thankTitle:'ขอบคุณ! ส่งออเดอร์แล้ว',thankSub:'ทางร้านได้รับคำสั่งซื้อของคุณแล้ว',thankNote:'ทางร้านจะติดต่อกลับเพื่อยืนยันและนัดรับ',refLabel:'เลขอ้างอิง',newOrder:'เริ่มออเดอร์ใหม่',backCart:'‹ กลับไปแก้ไข / ส่งซ้ำ'},
+   thankTitle:'ขอบคุณ! ส่งออเดอร์แล้ว',thankSub:'ทางร้านได้รับคำสั่งซื้อของคุณแล้ว',thankNote:'ทางร้านจะติดต่อกลับเพื่อยืนยันและนัดรับ',refLabel:'เลขอ้างอิง',newOrder:'เริ่มออเดอร์ใหม่',backCart:'‹ กลับไปแก้ไข / ส่งซ้ำ',
+   saveQr:'บันทึกรูป QR ไว้สแกน',qrSaved:'บันทึก QR แล้ว ✓',shareShop:'แชร์ร้านให้เพื่อน ♡',linkCopied:'คัดลอกลิงก์ร้านแล้ว ✓'},
  en:{eyebrow:'House Menu',tagline:'Build your own curry rice — one step at a time',
    tabMeal:'Set Meals',tabSouv:'Souvenirs',
    stepWord:'Step',ofWord:'of',back:'Back',next:'Next',one:'Pick one',
@@ -594,7 +603,8 @@ var T={
    payttl:'Pay with PromptPay',payScan:'Scan to pay',payOr:'or cash on pickup',ppLabel:'PromptPay',
    emptyTitle:'Your cart is empty',emptySub:'Build a plate or pick up a souvenir',
    footHours:CONFIG.hoursEn,footPay:'PromptPay & cash on pickup accepted',
-   thankTitle:'Thank you! Order sent',thankSub:'We have received your order',thankNote:'We will contact you to confirm and arrange pickup',refLabel:'Reference',newOrder:'Start a new order',backCart:'‹ Back to edit / resend'}
+   thankTitle:'Thank you! Order sent',thankSub:'We have received your order',thankNote:'We will contact you to confirm and arrange pickup',refLabel:'Reference',newOrder:'Start a new order',backCart:'‹ Back to edit / resend',
+   saveQr:'Save QR to scan later',qrSaved:'QR saved ✓',shareShop:'Share with friends ♡',linkCopied:'Shop link copied ✓'}
 };
 
 /* index everything by id (for cart lookup + image fallback) */
@@ -696,7 +706,7 @@ function addSouv(id){var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.c
 function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0)state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
 function setMeta(k,v){state.meta[k]=v;persist();}
 
-function toast(m){state.toast=m;clearTimeout(toastTimer);toastTimer=setTimeout(function(){state.toast='';render();},1800);}
+function toast(m){state.toast=m;render();clearTimeout(toastTimer);toastTimer=setTimeout(function(){state.toast='';render();},1800);}
 
 function orderText(){
  var L=state.lang,t=T[L],m=state.meta;
@@ -715,6 +725,38 @@ function orderText(){
  if(m.note)out+=t.note+': '+m.note+'\n';
  out+='— — — — — —\n'+t.total+': ฿'+money(grandTotal());
  return out;
+}
+/* pickup slots: every 30 min within opening hours (08:00–19:30), only future (+30 min lead) */
+function pickupSlots(){
+ var out=[['',T[state.lang].asap]];
+ var now=new Date(), lead=new Date(now.getTime()+30*60000);
+ for(var h=8;h<=19;h++)for(var m=0;m<60;m+=30){
+  var slot=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m);
+  if(slot>=lead){var hh=('0'+h).slice(-2)+':'+('0'+m).slice(-2);out.push([hh,hh]);}
+ }
+ if(state.meta.time&&!out.some(function(o){return o[0]===state.meta.time;}))out.push([state.meta.time,state.meta.time]);
+ return out;
+}
+var SITE_URL='https://chawanansuk.github.io/hohkitchen/';
+function saveQR(){
+ var el=document.getElementById('qr');if(!el)return;
+ var url='',img=el.querySelector&&el.querySelector('img');
+ if(img&&img.src)url=img.src;
+ if(!url){var cv=el.querySelector&&el.querySelector('canvas');if(cv){try{url=cv.toDataURL('image/png');}catch(e){}}}
+ if(!url)return;
+ try{
+  var a=document.createElement('a');a.href=url;a.download='promptpay-hohkitchen.png';
+  (document.body||document.documentElement).appendChild(a);a.click();a.remove();
+  toast(T[state.lang].qrSaved);
+ }catch(e){}
+}
+function shareShop(){
+ var done=function(){toast(T[state.lang].linkCopied);};
+ try{
+  if(navigator.share){navigator.share({title:'House of Happiness Kitchen',url:SITE_URL}).catch(function(){});return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(SITE_URL).then(done).catch(done);return;}
+ }catch(e){}
+ done();
 }
 function genOrderNo(){var d=new Date(),p=function(n){return(''+n).padStart(2,'0');};return 'HH'+(''+d.getFullYear()).slice(2)+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'-'+Math.floor(100+Math.random()*900);}
 function sendOrderWebhook(channel,txt){var url=CONFIG.orderWebhook;if(!url)return;try{fetch(url,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({ref:state.lastOrderNo,channel:channel,total:grandTotal(),lang:state.lang,name:state.meta.name,room:state.meta.room,time:state.meta.time,note:state.meta.note,items:txt,at:new Date().toISOString()})});}catch(e){}}
@@ -738,6 +780,18 @@ var root=document.getElementById('root');
 function headerHTML(){
  var t=T[state.lang];
  var building=state.view==='build', shopping=state.view==='shop';
+ var lang='<div class="langtoggle">'+
+   '<button class="langbtn'+(state.lang==='th'?' active':'')+'" data-act="lang" data-l="th">ไทย</button>'+
+   '<button class="langbtn'+(state.lang==='en'?' active':'')+'" data-act="lang" data-l="en">EN</button>'+
+  '</div>';
+ /* compact header on cart/done: brand stays, content starts sooner */
+ if(state.view==='cart'||state.view==='done'){
+  return '<header class="hdr-compact">'+lang+
+   '<div class="mini-brand">'+salaMarkSVG('hdrc','mini-mark')+
+    '<div><div class="mini-eyebrow">HOUSE OF HAPPINESS</div>'+
+    '<div class="mini-kitchen">KITCHEN · ครัวแห่งความสุข</div></div></div>'+
+  '</header>';
+ }
  var chip=(state.cart.length>0&&state.view!=='cart')?
   ('<button class="chip" data-act="gocart" aria-label="'+esc(t.viewCart)+'">'+
    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z"></path><path d="M8 6V4a4 4 0 0 1 8 0v2"></path></svg>'+
@@ -751,11 +805,7 @@ function headerHTML(){
      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'+esc(t.tabSouv)+'</button>'+
    '</div>'+chip+
   '</div>'):'';
- return '<header>'+
-  '<div class="langtoggle">'+
-   '<button class="langbtn'+(state.lang==='th'?' active':'')+'" data-act="lang" data-l="th">ไทย</button>'+
-   '<button class="langbtn'+(state.lang==='en'?' active':'')+'" data-act="lang" data-l="en">EN</button>'+
-  '</div>'+
+ return '<header>'+lang+
   '<div class="brandblock">'+
    '<div class="brand-logo">'+salaMarkSVG('hdr','')+'</div>'+
    '<div class="lk-eyebrow">HOUSE OF</div>'+
@@ -922,7 +972,7 @@ function cartScreenHTML(){
     '<input class="finput" data-field="room" value="'+esc(state.meta.room)+'" placeholder="'+esc(t.roomPh)+'" autocomplete="off" autocapitalize="characters" enterkeyhint="next"></div>'+
    '<div class="field"><label class="flabel">'+esc(t.time)+'</label>'+
     '<select class="fselect" data-field="time">'+
-     [['',t.asap],['08:00','08:00'],['09:00','09:00'],['12:00','12:00'],['18:00','18:00'],['19:00','19:00']].map(function(o){
+     pickupSlots().map(function(o){
        return '<option value="'+o[0]+'"'+(state.meta.time===o[0]?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+
     '</select></div></div>'+
   '<div class="field"><label class="flabel">'+esc(t.note)+'</label>'+
@@ -931,7 +981,8 @@ function cartScreenHTML(){
  // total + pay
  html+='<div class="totalrow"><span class="lbl">'+esc(t.total)+'</span><span class="grand gold-text">฿'+money(grandTotal())+'</span></div>'+
   '<div class="paybox"><h4>'+esc(t.payttl)+'</h4><div class="qr" id="qr"><span class="qr-load"></span></div>'+
-   '<div class="paynote">'+esc(t.payScan)+' <b>฿'+money(grandTotal())+'</b> · '+esc(t.ppLabel)+' <b>'+esc(CONFIG.promptpayId)+'</b><br>'+esc(t.payOr)+'</div></div>';
+   '<div class="paynote">'+esc(t.payScan)+' <b>฿'+money(grandTotal())+'</b> · '+esc(t.ppLabel)+' <b>'+esc(CONFIG.promptpayId)+'</b><br>'+esc(t.payOr)+'</div>'+
+   '<button class="qrsave" data-act="saveqr">⬇ '+esc(t.saveQr)+'</button></div>';
  html+='</div>';
  return html;
 }
@@ -977,6 +1028,7 @@ function doneScreenHTML(){
    '<div class="done-row"><span>'+esc(t.total)+'</span><b class="gold-text">฿'+money(state.lastOrderTotal)+'</b></div></div>'+
   '<div class="done-note">'+esc(t.thankNote)+'</div>'+
   '<button class="btn btn-primary" style="width:100%;margin-top:18px" data-act="neworder">'+esc(t.newOrder)+'</button>'+
+  '<button class="btn btn-ghost" style="width:100%;flex:none;margin-top:11px" data-act="share">'+esc(t.shareShop)+'</button>'+
   '<button class="backlink" data-act="gocart" style="margin-top:12px">'+esc(t.backCart)+'</button>'+
  '</div></div>';
 }
@@ -999,7 +1051,7 @@ function drawQR(){
  var el=document.getElementById('qr');if(!el)return;
  var amt=grandTotal();el.innerHTML='';qrAmount=amt;
  try{
-  if(window.QRCode){new window.QRCode(el,{text:ppPayload(CONFIG.promptpayId,amt),width:150,height:150,correctLevel:window.QRCode.CorrectLevel.M});}
+  if(window.QRCode){new window.QRCode(el,{text:ppPayload(CONFIG.promptpayId,amt),width:134,height:134,correctLevel:window.QRCode.CorrectLevel.M});}
   else{el.textContent='PromptPay '+CONFIG.promptpayId;}
  }catch(e){el.textContent='PromptPay '+CONFIG.promptpayId;}
 }
@@ -1034,6 +1086,8 @@ root.addEventListener('click',function(e){
   case 'line': submitOrder('line'); break;
   case 'copy': copyOrder(); break;
   case 'neworder': newOrder(); break;
+  case 'saveqr': saveQR(); break;
+  case 'share': shareShop(); break;
  }
 });
 /* text/select inputs update state silently (no re-render → keeps focus) */
