@@ -1,0 +1,23 @@
+id,ชื่อ (ห้ามแก้คอลัมน์ id),ขาย (TRUE/FALSE),ราคา,ป้าย/ข้อความ
+c1,"แกงเขียวหวาน · Green Curry",TRUE,80,
+c2,"พะแนง · Panang Curry",TRUE,90,
+c3,"มัสมั่น · Massaman",TRUE,95,
+c4,"แกงกะหรี่ (สูตรกะทิ) · Kati Signature",TRUE,85,
+v1,"ส้มตำสลอว์ · Somtum Slaw",TRUE,40,
+v2,"สลัดเคล · Kale Salad",TRUE,40,
+v3,"ถั่วแขกผัดกระเทียม · Garlic Green Beans",TRUE,40,
+v4,"ซูกินีศรีราชา · Sriracha Zucchini",TRUE,45,
+r1,"ข้าวหอมมะลิ · Jasmine Rice",TRUE,15,
+r2,"ไรซ์เบอร์รี่ · Rice Berry",TRUE,25,
+r3,"กะหล่ำปลีซอย · Mixed Cabbage",TRUE,15,
+e1,"ไข่ต้ม · Boiled Egg",TRUE,15,
+e2,"ลาบเห็ด · Larb Mushroom",TRUE,30,
+e3,"สลัดแตงกวา · Cucumber Salad",TRUE,20,
+e4,"มันหวานอบ · Baked Sweet Potato",TRUE,25,
+s1,"ยาดมโป๊ยเซียน มาร์คทู · Poy-Sian Mark II Inhaler",TRUE,15,
+s2,"ยาดมน้ำ 2 อิน 1 · Liquid Inhaler 2-in-1",TRUE,25,
+s3,"ยาหม่องน้ำโป๊ยเซียน · Liquid Herbal Balm",TRUE,35,
+s4,"ยาหม่องสมุนไพร ตลับกลม · Herbal Balm Jar",TRUE,30,
+s5,"เซ็ตของฝากโป๊ยเซียน · Poy-Sian Gift Set",TRUE,99,
+announce_th,"ประกาศ (ไทย) — ใส่ข้อความในคอลัมน์ ป้าย แล้วตั้ง ขาย=TRUE เพื่อแสดง",FALSE,,"ตัวอย่าง: สั่งก่อน 11:00 ลด 10%!"
+announce_en,"Announcement (EN)",FALSE,,"Example: Order before 11am for 10% off!"
