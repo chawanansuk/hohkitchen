@@ -251,6 +251,12 @@
   .toast{position:fixed;left:50%;bottom:132px;transform:translateX(-50%);background:#0A2620;border:1px solid var(--hairs);color:var(--goldlt);
     padding:11px 18px;border-radius:99px;font-size:13px;font-weight:600;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:kklRise .25s}
 
+  /* ---- shop control panel: sold-out / badge / announcement ---- */
+  .card.soldout{filter:grayscale(.85);opacity:.62;cursor:default}
+  .card.soldout:active{transform:none}
+  .so-ribbon{position:absolute;top:13px;right:-35px;transform:rotate(35deg);background:#7A2A2A;color:#F3EAD6;font-size:11px;font-weight:700;letter-spacing:1.5px;padding:4px 42px;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+  .mbadge{position:absolute;top:9px;left:9px;z-index:3;background:linear-gradient(100deg,#F2DEA0,#C9A24A);color:#0A2620;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:99px;box-shadow:0 3px 10px rgba(7,32,25,.4)}
+  .announce{position:relative;z-index:1;margin:2px 20px 6px;border:1px solid var(--hairs);background:linear-gradient(100deg,rgba(201,162,74,.16),rgba(233,210,146,.07));color:var(--goldlt);font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:12px;text-align:center;line-height:1.5;animation:kklRise .4s}
   .toast-undo{margin-left:10px;border:none;background:linear-gradient(100deg,var(--gold),var(--goldlt));color:#0A2620;font-family:inherit;font-weight:700;font-size:12px;padding:5px 12px;border-radius:99px;cursor:pointer}
   .offline{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:95;max-width:92vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#3A2A12;border:1px solid var(--hairs);color:var(--goldlt);font-size:12px;font-weight:600;padding:8px 15px;border-radius:99px;box-shadow:0 8px 24px rgba(0,0,0,.45);animation:kklRise .3s}
   .empty{text-align:center;padding:60px 30px;color:var(--creamdim)}
@@ -325,6 +331,10 @@ var CONFIG = {
   lineId: '@kualuang',           // LINE official id (display only)
   defaultLang: 'th',
   orderWebhook: '',              // optional: POST orders here (Google Apps Script / Formspree / serverless URL)
+  // optional: shop control panel — a PUBLIC (view-only) Google Sheet that can
+  // mark items sold-out, override prices, add badges and show an announcement
+  // without touching code. See README + tools/menu-control.csv template.
+  controlSheetId: '',            // spreadsheet id between /d/ and /edit in its URL; '' = off
   plausibleDomain: '',           // optional: privacy-friendly analytics domain (Plausible)
   hoursTh: 'เปิดทุกวัน 08:00–20:00',
   hoursEn: 'Open daily 08:00–20:00',
@@ -616,7 +626,7 @@ var T={
    thankTitle:'ขอบคุณ! ส่งออเดอร์แล้ว',thankSub:'ทางร้านได้รับคำสั่งซื้อของคุณแล้ว',thankNote:'ทางร้านจะติดต่อกลับเพื่อยืนยันและนัดรับ',refLabel:'เลขอ้างอิง',newOrder:'เริ่มออเดอร์ใหม่',backCart:'‹ กลับไปแก้ไข / ส่งซ้ำ',
    saveQr:'บันทึกรูป QR ไว้สแกน',qrSaved:'บันทึก QR แล้ว ✓',shareShop:'แชร์ร้านให้เพื่อน ♡',linkCopied:'คัดลอกลิงก์ร้านแล้ว ✓',
    plates:'จำนวนจาน',platesHint:'เซ็ตเดียวกันหลายจาน กดเพิ่มได้เลย',
-   phone:'เบอร์โทร (ถ้ามี)',phonePh:'08x-xxx-xxxx',removedSet:'ลบออกจากตะกร้าแล้ว',undo:'เลิกทำ',restored:'กู้คืนแล้ว ✓',offline:'⚡ ออฟไลน์อยู่ — ดูเมนูได้ ส่งออเดอร์เมื่อกลับมาออนไลน์'},
+   phone:'เบอร์โทร (ถ้ามี)',phonePh:'08x-xxx-xxxx',removedSet:'ลบออกจากตะกร้าแล้ว',undo:'เลิกทำ',restored:'กู้คืนแล้ว ✓',offline:'⚡ ออฟไลน์อยู่ — ดูเมนูได้ ส่งออเดอร์เมื่อกลับมาออนไลน์',soldOut:'หมด'},
  en:{eyebrow:'House Menu',tagline:'Build your own curry rice — one step at a time',
    tabMeal:'Set Meals',tabSouv:'Souvenirs',
    stepWord:'Step',ofWord:'of',back:'Back',next:'Next',one:'Pick one',
@@ -635,7 +645,7 @@ var T={
    thankTitle:'Thank you! Order sent',thankSub:'We have received your order',thankNote:'We will contact you to confirm and arrange pickup',refLabel:'Reference',newOrder:'Start a new order',backCart:'‹ Back to edit / resend',
    saveQr:'Save QR to scan later',qrSaved:'QR saved ✓',shareShop:'Share with friends ♡',linkCopied:'Shop link copied ✓',
    plates:'Number of plates',platesHint:'Same set, several plates — tap +',
-   phone:'Phone (optional)',phonePh:'08x-xxx-xxxx',removedSet:'Removed from cart',undo:'Undo',restored:'Restored ✓',offline:'⚡ You are offline — browse freely, send when back online'}
+   phone:'Phone (optional)',phonePh:'08x-xxx-xxxx',removedSet:'Removed from cart',undo:'Undo',restored:'Restored ✓',offline:'⚡ You are offline — browse freely, send when back online',soldOut:'Sold out'}
 };
 
 /* index everything by id (for cart lookup + image fallback) */
@@ -727,9 +737,9 @@ function goTab(tab){state.view=tab;state.tab=tab;render();window.scrollTo(0,0);}
 function goCart(){state.view='cart';render();window.scrollTo(0,0);}
 function backToShop(){state.view=state.tab;render();window.scrollTo(0,0);}
 
-function pick(k,id){var s=STEPS.find(function(x){return x.key===k;});state.draft[k]=s.opts.find(function(o){return o.id===id;});render();}
+function pick(k,id){var s=STEPS.find(function(x){return x.key===k;});var o=s.opts.find(function(x){return x.id===id;});if(!o||o.soldOut)return;state.draft[k]=o;render();}
 function pickSpice(id){state.draft.spice=SPICES.find(function(x){return x.id===id;});render();}
-function toggleExtra(id){var ex=state.draft.extras.slice();var i=ex.indexOf(id);if(i>=0)ex.splice(i,1);else ex.push(id);state.draft.extras=ex;render();}
+function toggleExtra(id){var o=ITEMS[id];if(o&&o.soldOut)return;var ex=state.draft.extras.slice();var i=ex.indexOf(id);if(i>=0)ex.splice(i,1);else ex.push(id);state.draft.extras=ex;render();}
 function next(){var step=state.step;var ok=step<3?state.draft[STEPS[step].key]:true;if(ok){state.step=step+1;render();window.scrollTo(0,0);}}
 function back(){var step=state.step;if(step>0){state.step=step-1;render();window.scrollTo(0,0);}else if(state.cart.length>0){goCart();}}
 function addToCart(){var d=state.draft;if(!d.curry||!d.veg||!d.rice||!d.spice)return;
@@ -744,8 +754,8 @@ function editSet(idx){var set=state.cart[idx];state.view='build';state.tab='buil
 function removeSet(idx){lastRemoved={item:state.cart[idx],idx:idx};state.cart.splice(idx,1);if(state.cart.length===0){state.view='build';state.tab='build';state.step=0;state.draft={extras:[],qty:1};state.editingIndex=null;}state.toastAction='undo';toast(T[state.lang].removedSet);}
 function undoRemove(){if(!lastRemoved)return;var pos=Math.min(lastRemoved.idx,state.cart.length);state.cart.splice(pos,0,lastRemoved.item);lastRemoved=null;state.toastAction=null;toast(T[state.lang].restored);}
 function setQty(idx,d){var c=state.cart[idx];c.qty=Math.max(1,c.qty+d);render();}
-function addSouv(id){var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});toast(T[state.lang].added);render();}
-function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0)state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
+function addSouv(id){if(ITEMS[id]&&ITEMS[id].soldOut)return;var i=findSouv(id);if(i>=0)state.cart[i].qty++;else state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});toast(T[state.lang].added);render();}
+function souvStep(id,d){var i=findSouv(id);if(i<0){if(d>0&&!(ITEMS[id]&&ITEMS[id].soldOut))state.cart.push({kind:'souvenir',id:id,qty:1,prod:ITEMS[id]});}else{state.cart[i].qty+=d;if(state.cart[i].qty<1)state.cart.splice(i,1);}render();}
 function setMeta(k,v){state.meta[k]=v;persist();}
 
 function toast(m){state.toast=m;render();clearTimeout(toastTimer);toastTimer=setTimeout(function(){state.toast='';state.toastAction=null;render();},state.toastAction?4000:1800);}
@@ -887,9 +897,12 @@ function progressHTML(){
 }
 
 function optionCardHTML(o,selected,act,extra){
- return '<div class="card" data-act="'+act+'" data-id="'+o.id+'"'+(extra||'')+'>'+
-  (selected?'<div class="sel-ring"></div>':'')+
+ var so=!!o.soldOut;
+ return '<div class="card'+(so?' soldout':'')+'"'+(so?' aria-disabled="true"':' data-act="'+act+'" data-id="'+o.id+'"'+(extra||''))+'>'+
+  (selected&&!so?'<div class="sel-ring"></div>':'')+
+  (so?'<div class="so-ribbon">'+esc(T[state.lang].soldOut)+'</div>':'')+
   '<div class="card-media'+(o.img?' media-img':'')+'">'+illoHTML(o)+'<div class="scrim"></div>'+
+   (o.badge&&!so?'<span class="mbadge">'+esc(o.badge)+'</span>':'')+
    '<div class="price">฿'+o.price+'</div>'+
    (selected?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+
   '</div>'+
@@ -942,8 +955,13 @@ function shopCardHTML(o){
  var d=o.dynamic?'':desc(o);
  var descHtml=d?'<div class="card-desc">'+esc(d)+'</div>':'';
  var linkHtml=(o.dynamic&&o.url)?'<a class="souv-link" href="'+esc(o.url)+'" target="_blank" rel="noopener">'+(state.lang==='th'?'ดูรายละเอียด':'Details')+' ↗</a>':'';
- return '<div class="card flat">'+
-  '<div class="card-media'+(o.img?' media-img':'')+'">'+illoHTML(o)+'<div class="scrim"></div><div class="price">฿'+o.price+'</div>'+
+ var so=!!o.soldOut;
+ if(so)foot='<div class="souv-add" style="opacity:.45;cursor:default">'+esc(T[state.lang].soldOut)+'</div>';
+ return '<div class="card flat'+(so?' soldout':'')+'">'+
+  (so?'<div class="so-ribbon">'+esc(T[state.lang].soldOut)+'</div>':'')+
+  '<div class="card-media'+(o.img?' media-img':'')+'">'+illoHTML(o)+'<div class="scrim"></div>'+
+   (o.badge&&!so?'<span class="mbadge">'+esc(o.badge)+'</span>':'')+
+   '<div class="price">฿'+o.price+'</div>'+
    (q>0?'<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2620" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>':'')+'</div>'+
   '<div class="card-body"><div class="card-name">'+esc(nm(o))+'</div>'+
    (subLine?'<div class="card-sub">'+esc(subLine)+'</div>':'')+
@@ -1097,7 +1115,7 @@ function contentHTML(){
 }
 
 function render(){
- root.innerHTML=offlineHTML()+headerHTML()+progressHTML()+contentHTML()+bottomBarHTML()+toastHTML();
+ root.innerHTML=offlineHTML()+headerHTML()+announceHTML()+progressHTML()+contentHTML()+bottomBarHTML()+toastHTML();
  if(state.view==='cart')drawQR();
  persist();
  syncHistory();
@@ -1203,8 +1221,57 @@ async function loadShopSouvenirs(){
  if(items.length){
   SOUVENIRS=items.slice(0,max);
   SOUVENIRS.forEach(function(o){ITEMS[o.id]=o;});
+  applyControl();
   if(state.view==='shop')render();
  }
+}
+
+/* ============================================================
+   Shop control panel — reads a public Google Sheet (CSV endpoint)
+   columns: id | name(ref) | sell(TRUE/FALSE) | price | badge
+   special ids: announce_th / announce_en (badge column = message)
+   ============================================================ */
+var CONTROL=null;
+function parseCSV(text){var rows=[],row=[],cur='',q=false;for(var i=0;i<text.length;i++){var c=text[i];
+ if(q){if(c==='"'){if(text[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=c;}
+ else if(c==='"')q=true;
+ else if(c===','){row.push(cur);cur='';}
+ else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cur);rows.push(row);row=[];cur='';}
+ else cur+=c;}
+ if(cur!==''||row.length){row.push(cur);rows.push(row);}return rows;}
+function applyControl(){
+ if(!CONTROL)return;
+ Object.keys(CONTROL).forEach(function(id){
+  if(id.indexOf('announce')===0)return;
+  var c=CONTROL[id],o=ITEMS[id];if(!o)return;
+  o.soldOut=!c.avail;
+  if(!isNaN(c.price)&&c.price>0)o.price=Math.round(c.price);
+  o.badge=c.badge||'';
+ });
+}
+async function loadControlSheet(){
+ var id=CONFIG.controlSheetId;
+ if(!id||typeof fetch!=='function')return;
+ try{
+  var r=await fetch('https://docs.google.com/spreadsheets/d/'+encodeURIComponent(id)+'/gviz/tq?tqx=out:csv&t='+Date.now());
+  if(!r.ok)return;
+  var rows=parseCSV(await r.text());if(rows.length<2)return;
+  var map={};
+  rows.slice(1).forEach(function(rw){
+   var rid=(rw[0]||'').trim();if(!rid)return;
+   var sell=String(rw[2]||'').trim().toUpperCase();
+   map[rid]={avail:!(sell==='FALSE'||sell==='0'||sell==='หมด'||sell==='NO'),price:parseFloat(rw[3]),badge:(rw[4]||'').trim()};
+  });
+  CONTROL=map;
+  try{localStorage.setItem('hohk_ctrl',JSON.stringify(map));}catch(e){}
+  applyControl();render();
+ }catch(e){}
+}
+function announceHTML(){
+ if(!CONTROL||(state.view!=='build'&&state.view!=='shop'))return '';
+ var a=CONTROL['announce_'+state.lang]||CONTROL['announce'];
+ if(!a||!a.avail||!a.badge)return '';
+ return '<div class="announce" role="status">📣 '+esc(a.badge)+'</div>';
 }
 
 /* SEO: inject schema.org Menu built from the live menu data (single source of truth) */
@@ -1222,8 +1289,13 @@ async function loadShopSouvenirs(){
 /* deep-link / PWA shortcut launch: ?go=shop|cart */
 (function(){try{var go=new URLSearchParams(location.search).get('go');if(go==='shop'){state.view='shop';state.tab='shop';}else if(go==='cart'&&state.cart.length){state.view='cart';}}catch(e){}})();
 
+/* apply cached control data instantly, then refresh from the sheet */
+try{CONTROL=JSON.parse(localStorage.getItem('hohk_ctrl')||'null');}catch(e){}
+if(CONTROL)applyControl();
+
 render();
 loadShopSouvenirs();
+loadControlSheet();
 })();
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
